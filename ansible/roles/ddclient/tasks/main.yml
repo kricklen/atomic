@@ -41,6 +41,6 @@
     volumes:
       - "{{ ddclient_config_dir }}:/config:Z"
     env:
-      - PGID: "{{ ddclient_group_id }}"
-      - PUID: "{{ ddclient_user_id }}"
-      - TZ: "Europe/Berlin"
+      PGID: "{{ ddclient_group_id }}"
+      PUID: "{{ ddclient_user_id }}"
+      TZ: "Europe/Berlin"
