@@ -3,24 +3,10 @@
   user:
     name: "{{ samba_user_name }}"
     comment: User for samba docker
-    system: yes
+    system: "no" 
     create_home: "no"
     uid: "{{ samba_user_id }}"
     group: "{{ samba_group_name}}"
-
-# Create config directory
-- name: Create samba Directory
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ samba_user_name }}"
-    group: "{{ samba_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-    recurse: "true"
-  with_items:
-    - "{{ samba_dirs }}"
 
 # Start the samba docker container with prepared config file
 - name: Start samba
@@ -31,19 +17,20 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-      - "{{ samba_dir_etc }}:/etc:Z"
-      - "{{ samba_dir_cache }}:/var/samba/cache:Z"
-      - "{{ samba_dir_lib }}:/var/samba/lib:Z"
-      - "{{ samba_dir_log }}:/var/samba/log:Z"
-      - "{{ samba_dir_run }}:/run/samba:Z"
+      - "samba_etc:/etc:Z"
+      - "samba_cache:/var/cache/samba:Z"
+      - "samba_lib:/var/lib/samba:Z"
+      - "samba_log:/var/log/samba:z"
+      - "samba_run:/run/samba:Z"
+      - "/mnt/downloads:/downloads:z"
+      - "/mnt/samba:/samba:z"
     ports:
       - 139:139
       - 445:445
     env:
       TZ: "Europe/Berlin"
-      USER: "markus;markus;1000;1000"
     command: [
-      "/usr/bin/samba.sh",
-      "-s \"Downloads;/downloads;yes;no;no;markus;markus\"",
-      "-s \"Markus;/markus;yes;no;no;markus;markus\""
+      "-u \"{{ samba_user_name }};{{ samba_user_name }};{{ samba_user_id }};{{ samba_group_name }}\"",
+      "-s \"Downloads;/downloads;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\"",
+      "-s \"Samba;/samba;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\""
     ]

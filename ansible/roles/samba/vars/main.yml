@@ -3,16 +3,3 @@ samba_user_name:  "samba"
 samba_user_id:    1051
 samba_group_name: "users"
 samba_group_id:   100
-
-samba_dir_etc:    "/mnt/samba/etc"
-samba_dir_cache:  "/mnt/samba/cache"
-samba_dir_lib:    "/mnt/samba/lib"
-samba_dir_log:    "/mnt/samba/log"
-samba_dir_run:    "/mnt/samba/run"
-
-samba_dirs:
-  - "{{ samba_dir_etc }}"
-  - "{{ samba_dir_cache }}"
-  - "{{ samba_dir_lib }}"
-  - "{{ samba_dir_log }}"
-  - "{{ samba_dir_run }}"
