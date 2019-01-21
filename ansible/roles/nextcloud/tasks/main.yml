@@ -33,6 +33,16 @@
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
 
+# Create proxy network
+- name: Create docker proxy network
+  docker_network:
+    name: proxy
+
+# Create nextcloud_net network
+- name: Create nextcloud_net network
+  docker_network:
+    name: nextcloud_net
+
 # Start the nextcloud-fpm docker container
 - name: Start nextcloud-fpm to serve php
   docker_container:
@@ -43,12 +53,14 @@
     restart_policy: unless-stopped
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html:Z"
+    networks:
+      - name: nextcloud_net
 
 # Start nextcloud-web (nginx) to serve static html content
 - name: Start nextcloud-web
   docker_container:
     name: nextcloud-web
-    hosntame: nextcloud-web
+    hostname: nextcloud-web
     image: nginx:alpine
     state: started
     restart_policy: unless-stopped
@@ -60,5 +72,5 @@
       LETSENCRYPT_HOST: "{{ nextcloud_letsencrypt_host }}"
       LETSENCRYPT_EMAIL: "{{ nextcloud_letsencrypt_mail }}"
     networks:
-      - proxy
-      - default
+      - name: proxy
+      - name: nextcloud_net
