@@ -26,6 +26,7 @@
     - "{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}"
     - "{{ proxy_certbot_www_path }}"
     - "{{ proxy_nginx_path }}"
+#    - "/var/lib/letsencrypt"
 
 # Copy app.conf
 - name: Copy Template - app.conf.template -> app.conf
@@ -69,7 +70,7 @@
     name: proxy-nginx
     hostname: proxy-nginx
     image: nginx:alpine
-    restart: unless-stopped
+    restart_policy: unless-stopped
     volumes:
       - "{{ proxy_nginx_path }}:/etc/nginx/conf.d"
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
@@ -79,7 +80,7 @@
       - "443:443"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
-      - proxy_net
+      - name: proxy_net
 
 # From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
 # Add nginx docker to inventory
@@ -111,13 +112,13 @@
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
       - "{{ proxy_certbot_www_path }}:/var/www/certbot"
     networks:
-      - proxy_net
+      - name: proxy_net
     entrypoint: [
-        "certbot certonly --webroot -w /var/www/certbot ",
+        "certbot certonly --webroot --non-interactive --agree-tos --force-renewal ",
+        "-w /var/www/certbot ",
         "--email {{ proxy_certbot_email }} ",
         "-d {{ proxy_domain }} ",
-        "--rsa-key-size {{ proxy_rsa_keysize }} ",
-        "--agree-tos --force-renewal"
+        "--rsa-key-size {{ proxy_rsa_keysize }} "
     ]
 
 # Reload nginx in the previously started container
@@ -136,5 +137,5 @@
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
       - "{{ proxy_certbot_www_path }}:/var/www/certbot"
     networks:
-      - proxy_net
+      - name: proxy_net
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
