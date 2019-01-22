@@ -1,34 +1,34 @@
 # Create User for ddclient
 - name: Create User ddclient
   user:
-    name: ddclient
+    name: {{ ddclient_user_name }}
     comment: User for ddclient docker
     system: yes
     create_home: "no"
-    uid: 1050
-    group: ddclient
+    uid: {{ ddclient_user_id }}
+    group: {{ ddclient_group_name}}
 
 # Create config directory
 - name: Create DDClient Directory
   file:
-    path: /mnt/ddclient
+    path: {{ ddclient_config_dir }}
     state: directory
-    owner: ddclient
-    group: ddclient
-    seuser: system_u
-    serole: object_r
-    setype: container_file_t
+    owner: {{ ddclient_user_name }}
+    group: {{ ddclient_group_name }}
+    seuser: {{ se_file_user }}
+    serole: {{ se_file_role }}
+    setype: {{ se_file_type }}
 
 # Copy Template
 - name: Create Config from Template
   template:
     src: ddclient.config.template
-    dest: /mnt/ddclient/ddclient.config
-    owner: ddclient
-    group: ddclient
-    seuser: system_u
-    serole: object_r
-    setype: container_file_t
+    dest: "{{ ddclient_config_dir }}/ddclient.config"
+    owner: {{ ddclient_user_name }}
+    group: {{ ddclient_group_name }}
+    seuser: {{ se_file_user }}
+    serole: {{ se_file_role }}
+    setype: {{ se_file_type }}
 
 # Start the ddclient docker container with prepared config file
 - name: Start DDClient
@@ -39,8 +39,8 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-      - "/mnt/ddclient:/config:Z"
+      - "{{ ddclient_config_dir }}:/config:Z"
     env:
-      - PGID: 1050
-      - PUID: 1050
+      - PGID: {{ ddclient_group_id }}
+      - PUID: {{ ddclient_user_id }}
       - TZ: Europe/Berlin

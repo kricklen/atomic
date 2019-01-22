@@ -1,0 +1,12 @@
+# Playbook for installing ddclient, nextcloud, samba etc.
+# on Fedora Atomic Host
+---
+- hosts: localhost
+  vars:
+    # SELinux Settings
+    se_file_role: object_r
+    se_file_user: system_u
+    se_file_type: container_file_t
+  roles:
+    - ddclient
+    
