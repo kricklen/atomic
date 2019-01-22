@@ -51,6 +51,7 @@
     name: "{{ nextcloud_fpm_name }}"
     hostname: "{{ nextcloud_fpm_name }}"
     image: nextcloud:fpm-alpine
+    user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
     volumes:
@@ -65,6 +66,7 @@
     name: nextcloud-web
     hostname: nextcloud-web
     image: nginx:alpine
+    user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
     volumes:
