@@ -9,4 +9,4 @@
     se_file_type: container_file_t
   roles:
     - ddclient
-    
+    - samba
