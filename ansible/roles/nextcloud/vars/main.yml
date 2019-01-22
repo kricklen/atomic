@@ -1,0 +1,16 @@
+---
+nextcloud_user_name:  "nextcloud"
+nextcloud_user_id:    1052
+nextcloud_group_name: "users"
+nextcloud_group_id:   100
+
+nextcloud_virtual_host:     "hom3.spdns.org"
+nextcloud_letsencrypt_host: "hom3.spdns.org"
+nextcloud_letsencrypt_mail: "markus.mayerle@tutanota.de"
+
+nextcloud_www_dir:    "/mnt/nextcloud/www"
+nextcloud_nginx_dir:  "/mnt/nextcloud/nginx"
+
+nextcloud_dirs:
+  - "{{ nextcloud_www_dir }}"
+  - "{{ nextcloud_nginx_dir }}"

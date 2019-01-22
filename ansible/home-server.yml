@@ -3,10 +3,11 @@
 ---
 - hosts: localhost
   vars:
-    # SELinux Settings
+    # SELinux Settings for /mnt/ files and folders
     se_file_role: object_r
     se_file_user: system_u
     se_file_type: container_file_t
   roles:
     - ddclient
     - samba
+    - nextcloud
