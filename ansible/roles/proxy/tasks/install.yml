@@ -15,8 +15,8 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ proxy_user_name }}"
-    group: "{{ proxy_group_name }}"
+#    owner: "{{ proxy_user_name }}"
+#    group: "{{ proxy_group_name }}"
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
@@ -33,8 +33,8 @@
   template:
     src: app.conf.template
     dest: "{{ proxy_nginx_path }}/app.conf"
-    owner: "{{ proxy_user_name }}"
-    group: "{{ proxy_group_name }}"
+#    owner: "{{ proxy_user_name }}"
+#    group: "{{ proxy_group_name }}"
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
@@ -78,17 +78,17 @@
     ports:
       - "80:80"
       - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+#    command: "/bin/sh -c 'while :; do sleep 6h & wait $$; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
       - name: proxy_net
 
 # From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
 # Add nginx docker to inventory
-- name: Add to Inventory - proxy-nginx container
-  add_host:
-    name: proxy-nginx
-    ansible_connection: docker
-  changed_when: false
+#- name: Add to Inventory - proxy-nginx container
+#  add_host:
+#    name: proxy-nginx
+#    ansible_connection: docker
+#  changed_when: false
 
 # Delete the dummy certs
 - name: Delete Files - certbot dummy certificates
@@ -123,8 +123,8 @@
 
 # Reload nginx in the previously started container
 - name: Run bash Command - reload nginx in container
-  delegate_to: proxy-nginx
-  raw: nginx reload
+#  delegate_to: proxy-nginx
+  raw: docker exec proxy-nginx -nginx reload
 
 # Start certbot container
 - name: Start Container - proxy-certbot
