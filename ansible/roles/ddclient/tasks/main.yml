@@ -1,6 +1,7 @@
+# Include tasks for creating ddclient
 - name: Install ddclient
-  import_tasks:
-    - create_user
+  import_tasks: "install.yml"
+  when: run_mode == "install"
 
 # # Create User for ddclient
 # - name: Create User ddclient

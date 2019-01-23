@@ -4,6 +4,8 @@
 - hosts: localhost
   connection: local
   vars:
+    run_mode: install
+    install_state: present
     # SELinux Settings for /mnt/ files and folders
     se_file_role: object_r
     se_file_user: system_u

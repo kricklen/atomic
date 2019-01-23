@@ -1,9 +1,10 @@
 # Create User for ddclient
-- name: Create User ddclient
+- name: Create User - ddclient
   user:
+    state: "{{ install_state }}"
     name: "{{ ddclient_user_name }}"
     comment: User for ddclient docker
-    system: yes
+    system: "yes"
     create_home: "no"
     uid: "{{ ddclient_user_id }}"
     group: "{{ ddclient_group_name}}"

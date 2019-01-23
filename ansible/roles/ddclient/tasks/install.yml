@@ -1,0 +1,3 @@
+- name: install
+  import_tasks:
+    - "create_user.yml"
