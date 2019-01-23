@@ -10,6 +10,18 @@
     uid: "{{ samba_user_id }}"
     group: "{{ samba_group_name}}"
 
+# Create list of samba mounted volumes for system and extra shares
+- name: Set facts samba_shares
+  set_fact:
+    samba_volume_list: "{{ samba_volume_list + [ item.value + ':' + item.value + ':z' ] }}"
+  loop: "{{ samba_shares | dict2items }}"
+
+# create list of commands for user creation and exposing shares
+- name: Set facts samba_command_list
+  set_fact:
+    samba_command_list: "{{ samba_command_list + [ '-s \"' + item.key + ';' + item.value + ';yes;no;no;' + samba_user_name + ';' + samba_user_name + '\"' ] }}"
+  loop: "{{ samba_shares | dict2items }}"
+
 # Start the samba docker container with prepared config file
 - name: Start Docker Container - samba
   docker_container:
@@ -19,20 +31,11 @@
     image: dperson/samba
     restart_policy: unless-stopped
     volumes:
-      - "samba_etc:/etc:Z"
-      - "samba_cache:/var/cache/samba:Z"
-      - "samba_lib:/var/lib/samba:Z"
-      - "samba_log:/var/log/samba:z"
-      - "samba_run:/run/samba:Z"
-      - "/mnt/downloads:/downloads:z"
-      - "/mnt/samba:/samba:z"
+      "{{ samba_volume_list }}"
     ports:
       - 139:139
       - 445:445
     env:
       TZ: "Europe/Berlin"
-    command: [
-      "-u \"{{ samba_user_name }};{{ samba_user_name }};{{ samba_user_id }};{{ samba_group_name }}\"",
-      "-s \"Downloads;/downloads;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\"",
-      "-s \"Samba;/samba;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\""
-    ]
+    command: 
+      "{{ samba_command_list }}"

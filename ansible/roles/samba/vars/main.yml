@@ -3,3 +3,13 @@ samba_user_name:  "markus"
 samba_user_id:    1000
 samba_group_name: "users"
 samba_group_id:   100
+
+samba_volume_list:
+  - "samba_etc:/etc:Z"
+  - "samba_cache:/var/cache/samba:Z"
+  - "samba_lib:/var/lib/samba:Z"
+  - "samba_log:/var/log/samba:z"
+  - "samba_run:/run/samba:Z"
+
+samba_command_list:
+  - "-u \"{{ samba_user_name }};{{ samba_user_name }};{{ samba_user_id }};{{ samba_group_name }}\""

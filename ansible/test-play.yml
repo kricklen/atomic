@@ -30,6 +30,9 @@
     paths:
       - path a
       - path b
+    samba_shares:
+      Downloads: /mnt/downloads
+      Home: /mnt/home
 
   tasks:
     - name: Test list iteration
@@ -76,3 +79,18 @@
       debug:
         msg: "{{ item.path | relpath('./roles') }}"
       loop: "{{ files_found.files }}"
+
+    - name: Loop samba_shares
+      debug:
+        msg: "{{ item.key }}:{{ item.value }}"
+      loop: "{{ samba_shares | dict2items }}"
+
+    - name: Set facts samba_shares
+      set_fact:
+        samba_shares_list: "{{ samba_shares_list | default([]) + [ item.key + ':' + item.value + ':z' ] }}"
+      loop: "{{ samba_shares | dict2items }}"
+
+    - name: Print fact
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ samba_shares_list }}"
