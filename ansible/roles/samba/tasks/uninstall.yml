@@ -5,6 +5,7 @@
     name: samba
     hostname: samba
     image: dperson/samba
+    keep_volumes: "no"
 
 # Delete User for samba
 - name: Delete User - samba

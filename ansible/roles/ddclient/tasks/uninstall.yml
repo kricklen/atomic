@@ -5,6 +5,7 @@
     name: ddclient
     hostname: ddclient
     image: linuxserver/ddclient
+    keep_volumes: "no"
 
 # Create User for ddclient
 - name: Delete User - ddclient

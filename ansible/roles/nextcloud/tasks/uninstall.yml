@@ -5,6 +5,7 @@
     name: nextcloud-web
     hostname: nextcloud-web
     image: nginx:alpine
+    keep_volumes: "no"
 
 # Remove nextcloud-fpm docker container
 - name: "Stop and Remove Container - {{ nextcloud_fpm_name }}"
@@ -13,6 +14,7 @@
     name: "{{ nextcloud_fpm_name }}"
     hostname: "{{ nextcloud_fpm_name }}"
     image: nextcloud:fpm-alpine
+    keep_volumes: "no"
 
 # Remove proxy network
 - name: Remove Docker Network - proxy_net
