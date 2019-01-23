@@ -2,6 +2,7 @@
 # on Fedora Atomic Host
 ---
 - hosts: localhost
+  connection: local
   vars:
     # SELinux Settings for /mnt/ files and folders
     se_file_role: object_r
