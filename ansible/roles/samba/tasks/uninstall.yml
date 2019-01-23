@@ -1,5 +1,5 @@
 # Start the samba docker container with prepared config file
-- name: Start Docker Container - samba
+- name: Stop and Remove Docker Container - samba
   docker_container:
     state: absent
     name: samba
@@ -12,3 +12,15 @@
   user:
     state: absent
     name: "{{ samba_user_name }}"
+
+# Remove docker volumes for samba
+- name: Remove Docker Volumes - samba
+  docker_volume:
+    state: absent
+    name: "{{ item }}"
+  with_items:
+    - samba_etc
+    - samba_cache
+    - samba_lib
+    - samba_log
+    - samba_run
