@@ -38,7 +38,7 @@
 # Create proxy network
 - name: Create Docker Network - proxy
   docker_network:
-    name: proxy
+    name: proxy_net
 
 # Create nextcloud_net network
 - name: Create Docker Network - nextcloud_net
@@ -76,5 +76,5 @@
       LETSENCRYPT_EMAIL: "{{ nextcloud_letsencrypt_mail }}"
     purge_networks: "yes"
     networks:
-      - name: proxy
+      - name: proxy_net
       - name: nextcloud_net
