@@ -1,17 +1,10 @@
 # Start the ddclient docker container with prepared config file
-- name: Stop Container - ddclient
+- name: Stop and Remove Container - ddclient
   docker_container:
     state: absent
     name: ddclient
     hostname: ddclient
     image: linuxserver/ddclient
-    restart_policy: unless-stopped
-    volumes:
-      - "{{ ddclient_config_dir }}:/config:Z"
-    env:
-      PGID: "{{ ddclient_group_id }}"
-      PUID: "{{ ddclient_user_id }}"
-      TZ: "Europe/Berlin"
 
 # Create User for ddclient
 - name: Delete User - ddclient
@@ -23,5 +16,5 @@
 # Remove config directory
 - name: "Remove Directory - {{ ddclient_config_dir }}"
   file:
-    path: "{{ ddclient_config_dir }}"
     state: absent
+    path: "{{ ddclient_config_dir }}"
