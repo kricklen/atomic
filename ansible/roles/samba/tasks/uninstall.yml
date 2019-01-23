@@ -1,0 +1,13 @@
+# Start the samba docker container with prepared config file
+- name: Start Docker Container - samba
+  docker_container:
+    state: absent
+    name: samba
+    hostname: samba
+    image: dperson/samba
+
+# Delete User for samba
+- name: Delete User - samba
+  user:
+    state: absent
+    name: "{{ samba_user_name }}"

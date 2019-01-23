@@ -1,38 +1,8 @@
-# Create User for samba
-- name: Create User - samba
-  user:
-    state: present
-    name: "{{ samba_user_name }}"
-    comment: User for samba docker
-    system: "no" 
-    create_home: "no"
-    non_unique: "yes"
-    uid: "{{ samba_user_id }}"
-    group: "{{ samba_group_name}}"
+# Include tasks for creating samba
+- name: Install samba
+  import_tasks: "install.yml"
+  when: run_mode == "install"
 
-# Start the samba docker container with prepared config file
-- name: Start Docker Container - samba
-  docker_container:
-    name: samba
-    hostname: samba
-    image: dperson/samba
-    state: started
-    restart_policy: unless-stopped
-    volumes:
-      - "samba_etc:/etc:Z"
-      - "samba_cache:/var/cache/samba:Z"
-      - "samba_lib:/var/lib/samba:Z"
-      - "samba_log:/var/log/samba:z"
-      - "samba_run:/run/samba:Z"
-      - "/mnt/downloads:/downloads:z"
-      - "/mnt/samba:/samba:z"
-    ports:
-      - 139:139
-      - 445:445
-    env:
-      TZ: "Europe/Berlin"
-    command: [
-      "-u \"{{ samba_user_name }};{{ samba_user_name }};{{ samba_user_id }};{{ samba_group_name }}\"",
-      "-s \"Downloads;/downloads;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\"",
-      "-s \"Samba;/samba;yes;no;no;{{ samba_user_name }};{{ samba_user_name }}\""
-    ]
+- name: Uninstall samba
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"
