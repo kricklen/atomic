@@ -14,33 +14,14 @@
       TZ: "Europe/Berlin"
 
 # Create User for ddclient
-- name: Create User - ddclient
+- name: Delete User - ddclient
   user:
+    state: absent
+    remove: yes
     name: "{{ ddclient_user_name }}"
-    comment: User for ddclient docker
-    system: "yes"
-    create_home: "no"
-    uid: "{{ ddclient_user_id }}"
-    group: "{{ ddclient_group_name}}"
 
 # Remove config directory
 - name: "Remove Directory - {{ ddclient_config_dir }}"
   file:
     path: "{{ ddclient_config_dir }}"
-    state: directory
-    owner: "{{ ddclient_user_name }}"
-    group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-
-# Copy Template
-- name: "Copy Template - ddclient.config"
-  template:
-    src: ddclient.config.template
-    dest: "{{ ddclient_config_dir }}/ddclient.config"
-    owner: "{{ ddclient_user_name }}"
-    group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
+    state: absent
