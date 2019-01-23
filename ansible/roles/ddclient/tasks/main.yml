@@ -3,49 +3,6 @@
   import_tasks: "install.yml"
   when: run_mode == "install"
 
-# # Create User for ddclient
-# - name: Create User ddclient
-#   user:
-#     name: "{{ ddclient_user_name }}"
-#     comment: User for ddclient docker
-#     system: yes
-#     create_home: "no"
-#     uid: "{{ ddclient_user_id }}"
-#     group: "{{ ddclient_group_name}}"
-
-# Create config directory
-- name: Create DDClient Directory
-  file:
-    path: "{{ ddclient_config_dir }}"
-    state: directory
-    owner: "{{ ddclient_user_name }}"
-    group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-
-# Copy Template
-- name: Create Config from Template
-  template:
-    src: ddclient.config.template
-    dest: "{{ ddclient_config_dir }}/ddclient.config"
-    owner: "{{ ddclient_user_name }}"
-    group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-
-# Start the ddclient docker container with prepared config file
-- name: Start DDClient
-  docker_container:
-    name: ddclient
-    hostname: ddclient
-    image: linuxserver/ddclient
-    state: started
-    restart_policy: unless-stopped
-    volumes:
-      - "{{ ddclient_config_dir }}:/config:Z"
-    env:
-      PGID: "{{ ddclient_group_id }}"
-      PUID: "{{ ddclient_user_id }}"
-      TZ: "Europe/Berlin"
+- name: Uninstall ddclient
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"
