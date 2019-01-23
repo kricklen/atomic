@@ -1,15 +1,17 @@
 # Create User for nextcloud
-- name: Create User nextcloud
+- name: Create User - nextcloud
   user:
+    state: present
     name: "{{ nextcloud_user_name }}"
     comment: User for nextcloud docker
     system: "no"
     create_home: "no"
+    non_unique: "yes"
     uid: "{{ nextcloud_user_id }}"
-    group: "{{ nextcloud_group_name}}"
+    group: "{{ nextcloud_group_name }}"
 
 # Create directories
-- name: Create nextcloud Directories
+- name: Create Directories - nextcloud
   file:
     path: "{{ item }}"
     state: directory
@@ -22,10 +24,10 @@
   with_items:
     - "{{ nextcloud_dirs }}"
 
-# Copy Template
-- name: Copy nginx.conf from template
+# Copy nginx.conf
+- name: Copy Temlate - nginx.conf.template -> nginx.conf
   template:
-    src: nginx.conf
+    src: nginx.conf.template
     dest: "{{ nextcloud_nginx_dir }}/nginx.conf"
     owner: "{{ nextcloud_user_name }}"
     group: "{{ nextcloud_group_name }}"
@@ -34,30 +36,31 @@
     setype: "{{ se_file_type }}"
 
 # Create proxy network
-- name: Create docker proxy network
+- name: Create Docker Network - proxy
   docker_network:
     name: proxy
 
 # Create nextcloud_net network
-- name: Create nextcloud_net network
+- name: Create Docker Network - nextcloud_net
   docker_network:
     name: nextcloud_net
 
-# Start the nextcloud-fpm docker container
-- name: Start nextcloud-fpm to serve php
+# Start nextcloud-fpm docker container
+- name: "Start Container - {{ nextcloud_fpm_name }}"
   docker_container:
-    name: nextcloud-fpm
-    hostname: nextcloud-fpm
+    name: "{{ nextcloud_fpm_name }}"
+    hostname: "{{ nextcloud_fpm_name }}"
     image: nextcloud:fpm-alpine
     state: started
     restart_policy: unless-stopped
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html:Z"
+    purge_networks: "yes"
     networks:
       - name: nextcloud_net
 
 # Start nextcloud-web (nginx) to serve static html content
-- name: Start nextcloud-web
+- name: Start Container - nextcloud-web
   docker_container:
     name: nextcloud-web
     hostname: nextcloud-web
@@ -71,6 +74,7 @@
       VIRTUAL_HOST: "{{ nextcloud_virtual_host }}"
       LETSENCRYPT_HOST: "{{ nextcloud_letsencrypt_host }}"
       LETSENCRYPT_EMAIL: "{{ nextcloud_letsencrypt_mail }}"
+    purge_networks: "yes"
     networks:
       - name: proxy
       - name: nextcloud_net

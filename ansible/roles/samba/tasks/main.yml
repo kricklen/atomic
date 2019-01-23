@@ -1,15 +1,17 @@
 # Create User for samba
-- name: Create User samba
+- name: Create User - samba
   user:
+    state: present
     name: "{{ samba_user_name }}"
     comment: User for samba docker
     system: "no" 
     create_home: "no"
+    non_unique: "yes"
     uid: "{{ samba_user_id }}"
     group: "{{ samba_group_name}}"
 
 # Start the samba docker container with prepared config file
-- name: Start samba
+- name: Start Docker Container - samba
   docker_container:
     name: samba
     hostname: samba

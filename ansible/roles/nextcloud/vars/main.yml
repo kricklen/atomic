@@ -8,6 +8,8 @@ nextcloud_virtual_host:     "hom3.spdns.org"
 nextcloud_letsencrypt_host: "hom3.spdns.org"
 nextcloud_letsencrypt_mail: "markus.mayerle@tutanota.de"
 
+nextcloud_fpm_name: "nextcloud-fpm"
+
 nextcloud_www_dir:    "/mnt/nextcloud/www"
 nextcloud_nginx_dir:  "/mnt/nextcloud/nginx"
 
