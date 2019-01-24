@@ -50,7 +50,6 @@
   docker_container:
     name: "{{ nextcloud_fpm_name }}"
     hostname: "{{ nextcloud_fpm_name }}"
-#    image: nextcloud:fpm-alpine
     image: local/nextcloud_fpm
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
@@ -66,7 +65,6 @@
   docker_container:
     name: nextcloud-web
     hostname: nextcloud-web
-#    image: nginx:alpine
     image: local/nextcloud_nginx
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
@@ -76,8 +74,6 @@
       - "{{ nextcloud_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
     env:
       VIRTUAL_HOST: "{{ nextcloud_virtual_host }}"
-#      LETSENCRYPT_HOST: "{{ nextcloud_letsencrypt_host }}"
-#      LETSENCRYPT_EMAIL: "{{ nextcloud_letsencrypt_mail }}"
     purge_networks: yes
     networks:
       - name: proxy_net

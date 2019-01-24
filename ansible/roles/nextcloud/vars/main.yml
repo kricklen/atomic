@@ -5,8 +5,6 @@ nextcloud_group_name: "users"
 nextcloud_group_id:   100
 
 nextcloud_virtual_host:     "hom3.spdns.org"
-nextcloud_letsencrypt_host: "hom3.spdns.org"
-nextcloud_letsencrypt_mail: "markus.mayerle@tutanota.de"
 
 nextcloud_fpm_name: "nextcloud-fpm"
 
