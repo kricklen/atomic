@@ -1,0 +1,140 @@
+# Create User for proxy
+- name: Create User - proxy
+  user:
+    state: present
+    name: "{{ proxy_user_name }}"
+    comment: User for proxy dockers
+    system: "no"
+    create_home: "no"
+    non_unique: yes
+    uid: "{{ proxy_user_id }}"
+    group: "{{ proxy_group_name }}"
+
+# Create directories
+- name: Create Directories - proxy
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ proxy_user_name }}"
+    group: "{{ proxy_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+  with_items:
+    - "{{ proxy_certbot_conf_path }}"
+    - "{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}"
+    - "{{ proxy_certbot_www_path }}"
+    - "{{ proxy_nginx_path }}"
+
+# Copy app.conf
+- name: Copy Template - app.conf.template -> app.conf
+  template:
+    src: app.conf.template
+    dest: "{{ proxy_nginx_path }}/app.conf"
+    owner: "{{ proxy_user_name }}"
+    group: "{{ proxy_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+# Download recommended nginx settings
+- name: Download file - options-ssl-nginx.conf
+  uri:
+    url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf
+    dest: "{{ proxy_certbot_conf_path }}/options-ssl-nginx.conf"
+
+# Download recommended certbot settings
+- name: Download file - ssl-dhparams.pem
+  uri:
+    url: https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem
+    dest: "{{ proxy_certbot_conf_path }}/ssl-dhparams.pem"
+
+# Create self signed certificate for first run
+- name: Create Certificate - proxy self signed
+  command: >
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1
+    -keyout '{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}/privkey.pem'
+    -out '{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}/fullchain.pem'
+    -subj '/CN=localhost'
+
+# Create proxy network
+- name: Create Docker Network - proxy_net
+  docker_network:
+    name: proxy_net
+
+# Start proxy-nginx docker container
+- name: Start Container - proxy-nginx
+  docker_container:
+    name: proxy-nginx
+    hostname: proxy-nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - "{{ proxy_nginx_path }}:/etc/nginx/conf.d"
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    networks:
+      - proxy_net
+
+# From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
+# Add nginx docker to inventory
+- name: Add to Inventory - proxy-nginx container
+  add_host:
+    name: proxy-nginx
+    ansible_connection: docker
+  changed_when: false
+
+# Delete the dummy certs
+- name: Delete Files - certbot dummy certificates
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - "{{ proxy_certbot_www_path }}/live/{{ proxy_domain }}"
+    - "{{ proxy_certbot_www_path }}/archive/{{ proxy_domain }}"
+    - "{{ proxy_certbot_www_path }}/renewal/{{ proxy_domain }}.conf"
+
+# Run certbot one-shot to request letsencrypt certificate
+- name: Start Container - proxy-certbot (one-shot)
+  docker_container:
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: certbot/certbot
+    cleanup: yes
+    detach: "no"
+    volumes:
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+    networks:
+      - proxy_net
+    entrypoint: [
+        "certbot certonly --webroot -w /var/www/certbot ",
+        "--email {{ proxy_certbot_email }} ",
+        "-d {{ proxy_domain }} ",
+        "--rsa-key-size {{ proxy_rsa_keysize }} ",
+        "--agree-tos --force-renewal"
+    ]
+
+# Reload nginx in the previously started container
+- name: Run bash Command - reload nginx in container
+  delegate_to: proxy-nginx
+  raw: nginx reload
+
+# Start certbot container
+- name: Start Container - proxy-certbot
+  docker_container:
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+    networks:
+      - proxy_net
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

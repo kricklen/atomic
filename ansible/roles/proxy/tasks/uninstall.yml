@@ -1,0 +1,23 @@
+# Remove proxy-nginx container
+- name: Stop and Remove Container - proxy-nginx
+  docker_container:
+    state: absent
+    name: proxy-nginx
+    hostname: proxy-nginx
+    image: nginx:alpine
+    keep_volumes: "no"
+
+# Remove proxy-nginx container
+- name: Stop and Remove Container - proxy-certbot
+  docker_container:
+    state: absent
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: certbot:certbot
+    keep_volumes: "no"
+
+# Remove proxy network
+- name: Remove Docker Network - proxy_net
+  docker_network:
+    state: absent
+    name: proxy_net
