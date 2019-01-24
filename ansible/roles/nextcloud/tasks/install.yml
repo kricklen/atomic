@@ -56,7 +56,7 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-      - "{{ nextcloud_www_dir }}:/var/www/html:Z"
+      - "{{ nextcloud_www_dir }}:/var/www/html:z"
     purge_networks: yes
     networks:
       - name: nextcloud_net

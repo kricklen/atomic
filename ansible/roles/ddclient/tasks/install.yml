@@ -20,10 +20,11 @@
     setype: "{{ se_file_type }}"
 
 # Copy Template
-- name: "Copy Template - ddclient.config"
+- name: "Copy Template - ddclient.conf"
   template:
-    src: ddclient.config.template
-    dest: "{{ ddclient_config_dir }}/ddclient.config"
+    src: ddclient.conf.template
+    dest: "{{ ddclient_config_dir }}/ddclient.conf"
+    mode: 0600
     owner: "{{ ddclient_user_name }}"
     group: "{{ ddclient_group_name }}"
     seuser: "{{ se_file_user }}"

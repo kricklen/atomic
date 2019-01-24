@@ -1,5 +1,5 @@
 ---
-samba_user_name:  "samba"
-samba_user_id:    1051
+samba_user_name:  "markus"
+samba_user_id:    1000
 samba_group_name: "users"
 samba_group_id:   100

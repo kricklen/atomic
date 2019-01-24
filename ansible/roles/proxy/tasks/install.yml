@@ -69,7 +69,7 @@
   docker_container:
     name: proxy-nginx
     hostname: proxy-nginx
-    image: nginx:alpine
+    image: local/proxy_nginx
     restart_policy: unless-stopped
     volumes:
       - "{{ proxy_nginx_path }}:/etc/nginx/conf.d"
@@ -78,7 +78,6 @@
     ports:
       - "80:80"
       - "443:443"
-#    command: "/bin/sh -c 'while :; do sleep 6h & wait $$; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
       - name: proxy_net
 
@@ -96,8 +95,8 @@
     state: absent
     path: "{{ item }}"
   with_items:
-    - "{{ proxy_certbot_www_path }}/live/{{ proxy_domain }}"
-    - "{{ proxy_certbot_www_path }}/archive/{{ proxy_domain }}"
+    - "{{ proxy_certbot_www_path }}/live/{{ proxy_domain }}/"
+    - "{{ proxy_certbot_www_path }}/archive/{{ proxy_domain }}/"
     - "{{ proxy_certbot_www_path }}/renewal/{{ proxy_domain }}.conf"
 
 # Run certbot one-shot to request letsencrypt certificate
@@ -124,7 +123,7 @@
 # Reload nginx in the previously started container
 - name: Run bash Command - reload nginx in container
 #  delegate_to: proxy-nginx
-  raw: docker exec proxy-nginx -nginx reload
+  raw: docker exec proxy-nginx nginx -s reload
 
 # Start certbot container
 - name: Start Container - proxy-certbot
@@ -132,7 +131,7 @@
     name: proxy-certbot
     hostname: proxy-certbot
     image: certbot/certbot
-    restart: unless-stopped
+    restart_policy: unless-stopped
     volumes:
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
       - "{{ proxy_certbot_www_path }}:/var/www/certbot"

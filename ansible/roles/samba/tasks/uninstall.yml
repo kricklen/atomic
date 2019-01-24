@@ -8,10 +8,10 @@
     keep_volumes: "no"
 
 # Delete User for samba
-- name: Delete User - samba
-  user:
-    state: absent
-    name: "{{ samba_user_name }}"
+#- name: Delete User - samba
+#  user:
+#    state: absent
+#    name: "{{ samba_user_name }}"
 
 # Remove docker volumes for samba
 - name: Remove Docker Volumes - samba
