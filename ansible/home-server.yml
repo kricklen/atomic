@@ -3,6 +3,7 @@
 ---
 - hosts: localhost
   connection: local
+
   vars:
     # run_mode is used to control whether the tasks should create or remove things
     # Can be "install" or "uninstall"
@@ -11,6 +12,11 @@
     se_file_role: object_r
     se_file_user: system_u
     se_file_type: container_file_t
+
+  # Include variables for setting up domains in ddclient, certbot, proxy nginx
+  var_files:
+    - ./setup-vars.yml
+
   roles:
     - ddclient
     - samba

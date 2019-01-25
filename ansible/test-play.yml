@@ -19,6 +19,13 @@
           email: "bar"
         }
       ]
+    domain_dict:
+      hom3.spdns.org:
+        token: 123
+        email: a@b.c
+      cloud-hom3.spdns.org:
+        token: 456
+        email: d@e.f
     paths:
       - path a
       - path b
@@ -30,4 +37,17 @@
       with_nested:
         - "{{ domain_list }}"
         - "{{ paths }}"
-        
+    - name: Test list concat
+      debug:
+        msg: "{{ item[0] | join(\" \") }}"
+      with_nested:
+        - "{{ domain_list }}"
+    - name: Test dict loop
+      debug:
+        msg: "{{ item.key }} : {{ item.value.token }}"
+      with_dict:
+        - "{{ domain_dict }}"
+    - name: Test dict loop2
+      debug:
+        msg: "{{ item.0 }} : {{ item.1 }}"
+      loop: "{{ domain_dict | product(paths) | list }}"

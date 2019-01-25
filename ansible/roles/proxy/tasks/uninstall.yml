@@ -21,3 +21,14 @@
   docker_network:
     state: absent
     name: proxy_net
+
+# Delete the certs
+- name: Delete Files - certbot certificates
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - "{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}/"
+    - "{{ proxy_certbot_conf_path }}/archive/{{ proxy_domain }}/"
+    - "{{ proxy_certbot_conf_path }}/renewal/{{ proxy_domain }}.conf"
+

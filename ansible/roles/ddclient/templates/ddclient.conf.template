@@ -6,11 +6,11 @@ server=update.spdns.de
 #ssl=yes
 
 # First dns name
-login=<uri.spdns.org>
-password='<update token>'
-<uri.spdns.org>
+login=hom3.spdns.org
+password=''
+hom3.spdns.org
 
 # Second dns name
-login=<uri2.spdns.org>
-password='<update token 2'
-<uri2.spdns.org>
+login=cloud-hom3.spdns.org
+password=''
+cloud-hom3.spdns.org

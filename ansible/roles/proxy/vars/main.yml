@@ -9,5 +9,8 @@ proxy_certbot_conf_path: "/mnt/proxy/certbot/conf"
 proxy_certbot_www_path:  "/mnt/proxy/certbot/www"
 
 proxy_domain:  "hom3.spdns.org"
-proxy_certbot_email: "markus.mayerle@tutanota.de"
+proxy_domain_list:
+  - "hom3.spdns.org"
+  - "cloud-hom3.spdns.org"
+proxy_certbot_email: ""
 proxy_rsa_keysize: 4096
