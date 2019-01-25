@@ -3,7 +3,6 @@
   docker_container:
     state: absent
     name: proxy-nginx
-    hostname: proxy-nginx
     image: nginx:alpine
     keep_volumes: "no"
 
@@ -12,7 +11,6 @@
   docker_container:
     state: absent
     name: proxy-certbot
-    hostname: proxy-certbot
     image: certbot:certbot
     keep_volumes: "no"
 
@@ -22,13 +20,12 @@
     state: absent
     name: proxy_net
 
-# Delete the certs
-- name: Delete Files - certbot certificates
+# Delete directories
+- name: Delete Directories - proxy
   file:
     state: absent
-    path: "{{ item }}"
+    path: "{{ item }}/"
   with_items:
-    - "{{ proxy_certbot_conf_path }}/live/{{ proxy_domain }}/"
-    - "{{ proxy_certbot_conf_path }}/archive/{{ proxy_domain }}/"
-    - "{{ proxy_certbot_conf_path }}/renewal/{{ proxy_domain }}.conf"
-
+  - "{{ proxy_certbot_conf_path }}"
+  - "{{ proxy_certbot_www_path }}"
+  - "{{ proxy_nginx_path }}"

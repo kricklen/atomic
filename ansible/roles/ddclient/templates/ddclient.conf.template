@@ -5,12 +5,10 @@ use=web, web=checkip.spdns.de
 server=update.spdns.de
 #ssl=yes
 
-# First dns name
-login=hom3.spdns.org
-password=''
-hom3.spdns.org
+{% for domain in domains %}
+# Domain {{ domain.key }}
+login={{ domain.key }}
+password='{{ domain.values.token }}'
+{{ domain.key }}
 
-# Second dns name
-login=cloud-hom3.spdns.org
-password=''
-cloud-hom3.spdns.org
+{% endfor %}

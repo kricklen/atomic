@@ -1,16 +1,6 @@
 ---
-proxy_user_name: "proxy"
-proxy_user_id:   1053
-proxy_group_name: "users"
-proxy_group_id:   100
-
 proxy_nginx_path:        "/mnt/proxy/nginx"
 proxy_certbot_conf_path: "/mnt/proxy/certbot/conf"
 proxy_certbot_www_path:  "/mnt/proxy/certbot/www"
 
-proxy_domain:  "hom3.spdns.org"
-proxy_domain_list:
-  - "hom3.spdns.org"
-  - "cloud-hom3.spdns.org"
-proxy_certbot_email: ""
 proxy_rsa_keysize: 4096

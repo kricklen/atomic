@@ -21,8 +21,9 @@
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
     recurse: yes
-  with_items:
-    - "{{ nextcloud_dirs }}"
+  loop:
+    - "{{ nextcloud_www_dir }}"
+    - "{{ nextcloud_nginx_dir }}"
 
 # Copy nginx.conf
 - name: Copy Temlate - nginx.conf.template -> nginx.conf
