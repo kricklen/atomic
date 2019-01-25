@@ -1,0 +1,33 @@
+
+# fail2ban docker manual:
+# https://www.the-lazy-dev.com/en/install-fail2ban-with-docker/
+---
+- hosts: localhost
+  connection: local
+
+  vars:
+    domain_list:
+      [
+        {
+          name: "abc",
+          token: "123",
+          email: "foo"
+        },
+        {
+          name: "def",
+          token: "456",
+          email: "bar"
+        }
+      ]
+    paths:
+      - path a
+      - path b
+
+  tasks:
+    - name: Test list iteration
+      debug:
+        msg: "{{ item[0].name }} : {{ item[0].email }} : {{ item[1] }}"
+      with_nested:
+        - "{{ domain_list }}"
+        - "{{ paths }}"
+        
