@@ -14,10 +14,12 @@
     se_file_type: container_file_t
 
   # Include variables for setting up domains in ddclient, certbot, proxy nginx
-  var_files:
+  vars_files:
     - ./setup-vars.yml
 
   roles:
+    - docker_builds
+      when run_mode == 'install'
     - ddclient
     - samba
     - nextcloud

@@ -1,0 +1,20 @@
+[DEFAULT]
+backend  = systemd
+ignoreip = 127.0.0.1/8 ::1 192.168.178.0/24 192.168.1.0/24
+bantime  = 60m
+findtime = 10m
+maxretry = 5
+
+
+#
+# JAILS
+#
+
+[sshd]
+enabled = true
+port    = ssh
+
+#[selinux-ssh]
+#enabled  = true
+#port     = ssh
+

@@ -112,7 +112,7 @@
     entrypoint: [
         "certbot certonly --webroot --non-interactive --agree-tos --force-renewal ",
         "-w /var/www/certbot ",
-        "--email {{ item.values.email }} ",
+        "--email {{ item.value.email }} ",
         "-d {{ item.key }} ",
         "--rsa-key-size {{ proxy_rsa_keysize }} "
       ]
@@ -121,7 +121,7 @@
 # Reload nginx in the previously started container
 - name: Run bash Command - reload nginx in container
   delegate_to: proxy-nginx
-  raw: docker exec proxy-nginx nginx -s reload
+  raw: nginx -s reload
 
 # Start certbot container
 - name: Start Container - proxy-certbot

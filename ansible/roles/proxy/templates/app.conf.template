@@ -15,11 +15,11 @@ server {
 {% for domain in domains %}
 server {
     listen 443 ssl;
-    server_name {{ domain.key }};
+    server_name {{ domain }};
     server_tokens off;
 
-    ssl_certificate /etc/letsencrypt/live/{{ domain.key }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ domain.key }}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 

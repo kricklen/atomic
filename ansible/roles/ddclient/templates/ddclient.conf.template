@@ -6,9 +6,9 @@ server=update.spdns.de
 #ssl=yes
 
 {% for domain in domains %}
-# Domain {{ domain.key }}
-login={{ domain.key }}
-password='{{ domain.values.token }}'
-{{ domain.key }}
+# Domain {{ domain }}
+login={{ domain }}
+password='{{ domains[domain].token }}'
+{{ domain }}
 
 {% endfor %}

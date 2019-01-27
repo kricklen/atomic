@@ -1,0 +1,20 @@
+- name: Build Image - nextcloud_fpm
+  docker_image:
+    path: ../nextcloud_fpm
+    name: local/nextcloud_fpm
+
+- name: Build Image - nextcloud_nginx
+  docker_image:
+    path: ../nextcloud_nginx
+    name: local/nextcloud_nginx
+
+- name: Build Image - proxy_certbot
+  docker_image:
+    path: ../proxy_certbot
+    name: local/proxy_certbot
+
+- name: Build Image - proxy_nginx
+  docker_image:
+    path: ../proxy_nginx
+    name: local/proxy_nginx
+

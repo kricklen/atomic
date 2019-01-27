@@ -6,6 +6,7 @@
   connection: local
 
   vars:
+    test_var: abc
     domain_list:
       [
         {
@@ -45,9 +46,19 @@
     - name: Test dict loop
       debug:
         msg: "{{ item.key }} : {{ item.value.token }}"
-      with_dict:
-        - "{{ domain_dict }}"
+      loop: "{{ domain_dict | dict2items }}"
     - name: Test dict loop2
       debug:
         msg: "{{ item.0 }} : {{ item.1 }}"
       loop: "{{ domain_dict | product(paths) | list }}"
+    - name: Test dict loop3
+      debug:
+        msg: "{{ domain_dict | list | join(' ') }}"
+    - name: Test dict loop4
+      debug:
+        msg: "{{ item.key }}"
+      loop: "{{ domain_dict | dict2items }}"
+    - name: Test dict loop5
+      debug:
+        msg: "{{ test_var }}/{{ item.0 }}/{{ item.1.key }}"
+      loop: "{{ [ 'live', 'arch' ] | product(domain_dict | dict2items) | list }}"
