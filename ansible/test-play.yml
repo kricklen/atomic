@@ -62,3 +62,17 @@
       debug:
         msg: "{{ test_var }}/{{ item.0 }}/{{ item.1.key }}"
       loop: "{{ [ 'live', 'arch' ] | product(domain_dict | dict2items) | list }}"
+
+    - name: Find files
+      find:
+        paths: ./roles/ddclient/tasks
+        patterns: '*'
+      register: files_found
+    - name: List Files - basename
+      debug:
+        msg: "{{ item.path | basename }}"
+      loop: "{{ files_found.files }}"
+    - name: List Files - relpath('./roles')
+      debug:
+        msg: "{{ item.path | relpath('./roles') }}"
+      loop: "{{ files_found.files }}"

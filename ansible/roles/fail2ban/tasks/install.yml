@@ -1,0 +1,18 @@
+# Delete configs
+- name: Find Files - fail2ban configs
+  find:
+    paths: ./templates/
+    patterns: '*'
+    recurse: yes
+  register: files_to_copy
+
+# Copy configs
+- name: Copy Files - fail2ban configs
+  command: "cp {{ item.path }} /etc/fail2ban/{{ item.path | relpath('./templates/') }}/"
+  loop: "{{ files_to_copy.files }}"
+
+# Restart service
+- name: Restart Service - fail2ban
+  systemd:
+    state: restarted
+    name: fail2ban
