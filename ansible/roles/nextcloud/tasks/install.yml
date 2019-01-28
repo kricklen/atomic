@@ -26,7 +26,7 @@
     - "{{ nextcloud_nginx_dir }}"
 
 # Copy nginx.conf
-- name: Copy Temlate - nginx.conf.template -> nginx.conf
+- name: Copy Template - nginx.conf.template -> nginx.conf
   template:
     src: nginx.conf.template
     dest: "{{ nextcloud_nginx_dir }}/nginx.conf"
