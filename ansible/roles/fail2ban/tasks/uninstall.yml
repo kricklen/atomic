@@ -1,37 +1,14 @@
-# Delete configs
-- name: Delete Files - fail2ban configs
+# Find configs
+- name: Find Files - fail2ban configs
   find:
-    paths: ./templates/
+    paths: "{{ file_path }}"
     patterns: '*'
     recurse: yes
   register: files_to_delete
 
-- name: Delete Files
+# Delete configs
+- name: Delete Files - fail2ban configs
   file:
     state: absent
-    path: "/etc/fail2ban/{{ item | basename }}"
+    path: "/etc/fail2ban/{{ item.path | relpath(file_path) }}"
   loop: "{{ files_to_delete.files }}"
-
-# Remove proxy-nginx container
-- name: Stop and Remove Container - proxy-certbot
-  docker_container:
-    state: absent
-    name: proxy-certbot
-    image: certbot:certbot
-    keep_volumes: "no"
-
-# Remove proxy network
-- name: Remove Docker Network - proxy_net
-  docker_network:
-    state: absent
-    name: proxy_net
-
-# Delete directories
-- name: Delete Directories - proxy
-  file:
-    state: absent
-    path: "{{ item }}/"
-  with_items:
-  - "{{ proxy_certbot_conf_path }}"
-  - "{{ proxy_certbot_www_path }}"
-  - "{{ proxy_nginx_path }}"

@@ -1,4 +1,4 @@
-# Find configss
+# Find configs
 - name: Find Files - fail2ban configs
   find:
     paths: "{{ file_path }}"
