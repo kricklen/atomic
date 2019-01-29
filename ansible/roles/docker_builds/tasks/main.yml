@@ -2,19 +2,23 @@
   docker_image:
     path: "{{ role_path }}/nextcloud_fpm"
     name: local/nextcloud_fpm
+    force: yes
 
 - name: Build Image - nextcloud_nginx
   docker_image:
     path: "{{ role_path }}/nextcloud_nginx"
     name: local/nextcloud_nginx
+    force: yes
 
 - name: Build Image - proxy_certbot
   docker_image:
     path: "{{ role_path }}/proxy_certbot"
     name: local/proxy_certbot
+    force: yes
 
 - name: Build Image - proxy_nginx
   docker_image:
     path: "{{ role_path }}/proxy_nginx"
     name: local/proxy_nginx
+    force: yes
 

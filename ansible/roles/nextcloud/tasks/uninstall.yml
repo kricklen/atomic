@@ -34,7 +34,7 @@
     state: absent
     path: "{{ item }}"
   loop:
-    - "{{ nextcloud_www_dir }}"
+#    - "{{ nextcloud_www_dir }}"
     - "{{ nextcloud_nginx_dir }}"
 
 # Delete User for nextcloud

@@ -1,0 +1,36 @@
+- name: Create User - plex
+  user:
+    state: present
+    name: "{{ plex_user_name }}"
+    comment: User for plex docker
+    system: "no" 
+    create_home: "no"
+    non_unique: "yes"
+    uid: "{{ plex_user_id }}"
+    group: "{{ plex_group_name}}"
+
+# Start the plex docker container with prepared config file
+- name: Start Docker Container - plex
+  docker_container:
+    state: started
+    name: plex
+    hostname: plex
+#    user: "{{ plex_user_id }}:{{ plex_user_id }}"
+    image: plexinc/pms-docker:latest
+    restart_policy: unless-stopped
+    volumes:
+      - "/mnt/plex/config:/config:Z"
+      - "/mnt/plex/transcode:/transcode:Z"
+      - "/mnt/downloads:/downloads:ro,z"
+    ports:
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32400:32400/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    env:
+      TZ: "Europe/Berlin"
