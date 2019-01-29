@@ -22,3 +22,8 @@
     name: local/proxy_nginx
     force: yes
 
+- name: Build Image - samba
+  docker_image:
+    path: "{{ role_path }}/samba"
+    name: local/samba
+    force: yes
