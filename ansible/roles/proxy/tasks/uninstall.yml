@@ -20,12 +20,12 @@
     state: absent
     name: proxy_net
 
-# Delete directories
-- name: Delete Directories - proxy
-  file:
-    state: absent
-    path: "{{ item }}/"
-  with_items:
-  - "{{ proxy_certbot_conf_path }}"
-  - "{{ proxy_certbot_www_path }}"
-  - "{{ proxy_nginx_path }}"
+## Delete directories
+#- name: Delete Directories - proxy
+#  file:
+#    state: absent
+#    path: "{{ item }}/"
+#  with_items:
+#  - "{{ proxy_certbot_conf_path }}"
+#  - "{{ proxy_certbot_www_path }}"
+#  - "{{ proxy_nginx_path }}"

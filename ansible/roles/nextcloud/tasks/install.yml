@@ -46,6 +46,12 @@
   docker_network:
     name: nextcloud_net
 
+# Create list of mounted volumes for system and external dirs
+- name: Set facts samba_shares
+  set_fact:
+    nextcloud_volume_list: "{{ nextcloud_volume_list + [ item.key + ':' + item.value + ':z' ] }}"
+  loop: "{{ nextcloud_shares | dict2items }}"
+
 # Start nextcloud-fpm docker container
 - name: "Start Container - {{ nextcloud_fpm_name }}"
   docker_container:
@@ -56,7 +62,8 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-      - "{{ nextcloud_www_dir }}:/var/www/html:z"
+      "{{ nextcloud_volume_list }}"
+#      - "{{ nextcloud_www_dir }}:/var/www/html:z"
     purge_networks: yes
     networks:
       - name: nextcloud_net

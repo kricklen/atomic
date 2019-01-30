@@ -10,3 +10,6 @@ nextcloud_fpm_name: "nextcloud-fpm"
 
 nextcloud_www_dir:    "/mnt/nextcloud/www"
 nextcloud_nginx_dir:  "/mnt/nextcloud/nginx"
+
+nextcloud_volume_list:
+  - "{{ nextcloud_www_dir }}:/var/www/html:z"

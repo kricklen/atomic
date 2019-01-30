@@ -36,7 +36,7 @@
   docker_container:
     name: ddclient
     hostname: ddclient
-    image: linuxserver/ddclient
+    image: linuxserver/ddclient:latest
     state: started
     restart_policy: unless-stopped
     volumes:

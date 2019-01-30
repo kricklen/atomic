@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/crontab -l | { cat; echo "5 3 0 0 0 /certbot_renew.sh"; } | crontab -
+/usr/bin/crontab -l | { cat; echo "15 5 * * 0 /certbot_renew.sh"; } | crontab -

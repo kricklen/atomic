@@ -20,8 +20,8 @@
   roles:
     - role: docker_builds
       when: run_mode == 'install'
-#    - fail2ban
-#    - ddclient
+    - fail2ban
+    - ddclient
     - samba
     - nextcloud
     - proxy
