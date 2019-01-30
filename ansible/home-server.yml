@@ -20,10 +20,10 @@
   roles:
 #    - role: docker_builds
 #      when: run_mode == 'install'
-    - fail2ban
+#    - fail2ban
 #    - ddclient
-    - samba
+#    - samba
     - nextcloud
-    - proxy
-    - plex
-    - ouroboros
+#    - proxy
+#    - plex
+#    - ouroboros

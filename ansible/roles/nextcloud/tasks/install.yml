@@ -47,7 +47,7 @@
     name: nextcloud_net
 
 # Create list of mounted volumes for system and external dirs
-- name: Set facts samba_shares
+- name: Set facts nextcloud_shares
   set_fact:
     nextcloud_volume_list: "{{ nextcloud_volume_list + [ item.key + ':' + item.value + ':z' ] }}"
   loop: "{{ nextcloud_shares | dict2items }}"

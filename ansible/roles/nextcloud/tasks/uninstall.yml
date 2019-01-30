@@ -16,12 +16,6 @@
     image: nextcloud:fpm-alpine
     keep_volumes: "no"
 
-# Remove proxy network
-- name: Remove Docker Network - proxy_net
-  docker_network:
-    state: absent
-    name: proxy_net
-
 # Remove nextcloud_net network
 - name: Remove Docker Network - nextcloud_net
   docker_network:
