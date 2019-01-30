@@ -1,0 +1,6 @@
+# Stop and remove the ouroboros docker container
+- name: Stop and Remove Docker Container - ouroboros
+  docker_container:
+    state: absent
+    name: ouroboros
+    image: pyouroboros/ouroboros:latest

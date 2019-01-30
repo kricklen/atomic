@@ -18,11 +18,12 @@
     - ./setup-vars.yml
 
   roles:
-    - role: docker_builds
-      when: run_mode == 'install'
-#    - fail2ban
+#    - role: docker_builds
+#      when: run_mode == 'install'
+    - fail2ban
 #    - ddclient
     - samba
     - nextcloud
     - proxy
     - plex
+    - ouroboros
