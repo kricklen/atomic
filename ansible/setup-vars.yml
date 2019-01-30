@@ -12,3 +12,5 @@ samba_shares:
   Downloads: /mnt/downloads
   Home: /mnt/home
 
+nextcloud_shares:
+  /mnt/downloads: /mnt/downloads

@@ -12,3 +12,9 @@
     state: absent
     path: "/etc/fail2ban/{{ item.path | relpath(file_path) }}"
   loop: "{{ files_to_delete.files }}"
+
+# Restart fail2ban
+- name: Restart Service - fail2ban
+  systemd:
+    state: restarted
+    name: fail2ban
