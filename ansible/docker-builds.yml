@@ -1,0 +1,8 @@
+# Playbook for building local docker images from
+# (not only) official sources.
+---
+- hosts: localhost
+  connection: local
+
+  roles:
+    - docker_builds

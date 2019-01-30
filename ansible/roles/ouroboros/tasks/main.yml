@@ -1,0 +1,8 @@
+# Include tasks for creating ouroboros
+- name: Install ouroboros
+  import_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall ouroboros
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"
