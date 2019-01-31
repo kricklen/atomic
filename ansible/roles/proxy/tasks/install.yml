@@ -10,8 +10,8 @@
   with_items:
     - "{{ proxy_certbot_conf_path }}"
     - "{{ proxy_certbot_www_path }}"
+    - "{{ proxy_certbot_lib_path }}"
     - "{{ proxy_nginx_path }}"
-#    - "/var/lib/letsencrypt"
 
 - name: Create Directories - certbot live
   file:
@@ -107,6 +107,7 @@
 #    volumes:
 #      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
 #      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+#      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt"
 #    networks:
 #      - name: proxy_net
 #    entrypoint: [

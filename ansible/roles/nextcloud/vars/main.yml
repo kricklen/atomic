@@ -4,8 +4,6 @@ nextcloud_user_id:    1052
 nextcloud_group_name: "users"
 nextcloud_group_id:   100
 
-nextcloud_virtual_host:     "hom3.spdns.org"
-
 nextcloud_fpm_name: "nextcloud-fpm"
 
 nextcloud_www_dir:    "/mnt/nextcloud/www"

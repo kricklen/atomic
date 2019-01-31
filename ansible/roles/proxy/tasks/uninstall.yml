@@ -6,7 +6,7 @@
     image: nginx:alpine
     keep_volumes: "no"
 
-# Remove proxy-nginx container
+# Remove proxy-certbot
 - name: Stop and Remove Container - proxy-certbot
   docker_container:
     state: absent

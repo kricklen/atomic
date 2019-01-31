@@ -1,0 +1,16 @@
+- name: Delete User - plex
+  user:
+    state: absent
+    name: "{{ plex_user_name }}"
+    comment: User for plex docker
+    system: "no" 
+    create_home: "no"
+    non_unique: "yes"
+    uid: "{{ plex_user_id }}"
+    group: "{{ plex_group_name}}"
+
+# Remove the plex docker container with prepared config file
+- name: Stop and Remove Docker Container - plex
+  docker_container:
+    state: absent
+    name: plex
