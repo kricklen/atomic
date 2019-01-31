@@ -80,8 +80,6 @@
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html:ro"
       - "{{ nextcloud_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
-    env:
-      VIRTUAL_HOST: "{{ nextcloud_virtual_host }}"
     purge_networks: yes
     networks:
       - name: proxy_net

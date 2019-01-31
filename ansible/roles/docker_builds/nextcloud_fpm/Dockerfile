@@ -1,14 +1,15 @@
 FROM nextcloud:fpm-alpine
 
+# Required for entrypoint.sh to init nextcloud
+ENV NEXTCLOUD_UPDATE=1
+
 RUN apk --no-cache add shadow \
     && usermod -u 1052 www-data \
-    && groupmod -g 1052 www-data
-
-RUN touch /var/run/nginx.pid \
-    && chown www-data:www-data /var/run/nginx.pid \
-    && ln -s /dev/stdout /var/www/nc_docker.log \
-    && chown -h www-data:www-data /var/www/nc_docker.log
-
+    && groupmod -g 1052 www-data \
+    && chown -R www-data:www-data /var/www
 RUN apk del shadow
 
 COPY install.sh /
+
+# Let install.sh run and start php-fpm afterwards
+CMD [ "/install.sh", "php-fpm" ]
