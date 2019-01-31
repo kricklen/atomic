@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t local/tor_relay .
+docker build -t local/tor_relay:latest .

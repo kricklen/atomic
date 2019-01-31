@@ -1,9 +1,19 @@
 FROM alpine:latest
 
 # Note: Tor is only in testing repo
-RUN apk update && apk add \
-    tor \
-    && rm -rf /var/cache/apk/*
+RUN sed -i -e 's/v[[:digit:]]\.[[:digit:]]/edge/g' /etc/apk/repositories \
+    && apk upgrade --update-cache --available \
+    && apk add \
+    tor shadow \
+    && usermod -u 1055 tor \
+    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
+#    && apk --update --allow-untrusted --repository http://dl-3.alpinelinux.org/alpine/edge/test/ \
+#    && apk --update --allow-untrusted --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ add \
+#    obfs4proxy \
+#    && groupmod -g 1055 tor \
+#    && apk --update --allow-untrusted --repository http://dl-4.alpinelinux.org/alpine/edge/community/ add \
+#    zlib musl libevent tor shadow \
 
 #    --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
 # default port to used for incoming Tor connections
@@ -19,6 +29,7 @@ EXPOSE 35278 35288
 RUN mkdir /var/run/tor \
     && chown -R tor /etc/tor \
     && chown -R tor /var/run/tor
+RUN apk del shadow
 
 USER tor
 
