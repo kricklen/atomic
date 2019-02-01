@@ -10,3 +10,5 @@ RUN touch /var/run/nginx.pid \
     && chown -h www-data:www-data /var/www/nc_docker.log
 
 RUN apk del shadow
+
+COPY install.sh /
