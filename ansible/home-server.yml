@@ -23,8 +23,8 @@
 #    - fail2ban
 #    - ddclient
 #    - samba
-    - nextcloud
+#    - nextcloud
 #    - proxy
 #    - plex
-#    - tor_relay
+    - tor_relay
 #    - ouroboros

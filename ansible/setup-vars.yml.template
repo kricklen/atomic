@@ -1,0 +1,25 @@
+domains:
+  hom3.local:
+    token: abc123
+    email: a@b.c
+
+samba_user_name: samba
+samba_user_id:   1000
+samba_group_name: users
+samba_group_id:   100
+
+samba_shares:
+  Share: /mnt/share
+  Home: /mnt/home
+
+nextcloud_shares:
+  /mnt/share: /mnt/share
+
+# Settings for torrc
+tor_or_port:  22233
+tor_dir_port: 22243
+tor_nickname: NoNickName
+tor_contact:  ""
+tor_bw_rate:  "2 MByte"
+tor_bw_burst: "5 MByte"
+

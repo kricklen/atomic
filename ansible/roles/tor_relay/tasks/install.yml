@@ -1,0 +1,50 @@
+# Create User for tor
+- name: Create User - tor
+  user:
+    name: "{{ tor_user_name }}"
+    comment: User for tor_relay docker
+    system: "yes"
+    create_home: "no"
+    uid: "{{ tor_user_id }}"
+    group: "{{ tor_group_name}}"
+
+# Create config directory
+- name: "Create Directory - {{ tor_config_dir }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ tor_user_name }}"
+    group: "{{ tor_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+  loop:
+    - "{{ tor_config_dir }}"
+    - "{{ tor_data_dir }}"
+
+# Copy Template
+- name: "Copy Template - torrc"
+  template:
+    src: torrc.template
+    dest: "{{ tor_config_dir }}/torrc"
+    mode: 0600
+    owner: "{{ tor_user_name }}"
+    group: "{{ tor_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+# Start the tor_relay docker container with prepared config file
+- name: Start Container - tor_relay
+  docker_container:
+    name: tor_relay
+    hostname: tor_relay
+    image: local/tor_relay:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "{{ tor_or_port }}:{{ tor_or_port }}"
+      - "{{ tor_dir_port }}:{{ tor_dir_port }}"
+    volumes:
+      - "{{ tor_config_dir }}:/etc/tor:Z"
+      - "{{ tor_data_dir }}:/var/lib/tor/data:Z"
