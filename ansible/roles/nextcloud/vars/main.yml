@@ -6,6 +6,7 @@ nextcloud_group_id:   100
 
 nextcloud_fpm_name: "nextcloud-fpm"
 
+nextcloud_db_dir:     "/mnt/nextcloud/db"
 nextcloud_www_dir:    "/mnt/nextcloud/www"
 nextcloud_nginx_dir:  "/mnt/nextcloud/nginx"
 
