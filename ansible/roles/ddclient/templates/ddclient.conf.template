@@ -1,5 +1,5 @@
-# check every hour
-daemon=3600
+# check every 5 mins
+daemon=300
 protocol=dyndns2
 use=web, web=checkip.spdns.de
 server=update.spdns.de

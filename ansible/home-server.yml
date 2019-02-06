@@ -21,9 +21,9 @@
 #    - role: docker_builds
 #      when: run_mode == 'install'
 #    - fail2ban
-#    - ddclient
+    - ddclient
 #    - samba
-    - nextcloud
+#    - nextcloud
 #    - proxy
 #    - plex
 #    - tor_relay

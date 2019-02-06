@@ -60,6 +60,7 @@
     hostname: nextcloud-db
     image: mariadb:latest
     state: started
+    restart_policy: unless-stopped
     env:
       MYSQL_RANDOM_ROOT_PASSWORD: yes
     volumes:
