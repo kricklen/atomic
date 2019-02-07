@@ -1,0 +1,8 @@
+# Include tasks for creating cockpit
+- name: Install cockpit_ws
+  import_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall cockpit_ws
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"

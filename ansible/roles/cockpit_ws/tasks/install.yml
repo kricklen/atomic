@@ -1,0 +1,15 @@
+# Start the cockpit docker container
+- name: Start Docker Container - cockpit_ws
+  docker_container:
+    state: started
+    name: cockpit_ws
+    hostname: cockpit_ws
+    image: docker.io/cockpit/ws:latest
+    restart_policy: unless-stopped
+    pid_mode: host
+    privileged: yes
+    volumes:
+      - /:/host
+    command:
+      - '/container/atomic-run'
+      - '--local-ssh'
