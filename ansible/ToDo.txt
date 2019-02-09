@@ -1,3 +1,4 @@
-1. Make dockers containers transmit logs to systemd so fail2ban can work
-2. Add docker for plex media server
-3. Add docker for tor relay
+1. Make firewalld, docker and fail2ban work together properly
+2. Make cockpit-ws secure with 2fa and cert
+3. Get ddns domain for cockpit-ws and config proxy/certbot
+4. Publish cockpit-ws
