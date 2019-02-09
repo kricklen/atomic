@@ -44,14 +44,14 @@
     url: https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem
     dest: "{{ proxy_certbot_conf_path }}/ssl-dhparams.pem"
 
-## Create self signed certificate for first run
-#- name: Create Certificate - proxy self signed
-#  command: >
-#    openssl req -x509 -nodes -newkey rsa:1024 -days 1
-#    -keyout '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/privkey.pem'
-#    -out '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/fullchain.pem'
-#    -subj '/CN=localhost'
-#  loop: "{{ domains | dict2items }}"
+# Create self signed certificate for first run
+- name: Create Certificate - proxy self signed
+  command: >
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1
+    -keyout '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/privkey.pem'
+    -out '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/fullchain.pem'
+    -subj '/CN=localhost'
+  loop: "{{ domains | dict2items }}"
 
 # Create proxy network
 - name: Create Docker Network - proxy_net
@@ -83,56 +83,55 @@
     ansible_connection: docker
   changed_when: false
 
-## Delete the dummy certs
-#- name: Delete Files - certbot dummy certificates
-#  file:
-#    state: absent
-#    path: "{{ proxy_certbot_conf_path }}/{{ item.0 }}/{{ item.1.key }}"
-#  loop: "{{ [  'live', 'archive' ] | product(domains | dict2items) | list }}"
+# Delete the dummy certs
+- name: Delete Files - certbot dummy certificates
+  file:
+    state: absent
+    path: "{{ proxy_certbot_conf_path }}/{{ item.0 }}/{{ item.1.key }}"
+  loop: "{{ [  'live', 'archive' ] | product(domains | dict2items) | list }}"
 
-#- name: Delete Files - certbot renewals
-#  file:
-#    state: absent
-#    path: "{{ proxy_certbot_conf_path }}/renewal/{{ item.key }}.conf"
-#  loop: "{{ domains | dict2items }}"
+- name: Delete Files - certbot renewals
+  file:
+    state: absent
+    path: "{{ proxy_certbot_conf_path }}/renewal/{{ item.key }}.conf"
+  loop: "{{ domains | dict2items }}"
 
-## Run certbot one-shot to request letsencrypt certificate
-#- name: Start Container - proxy-certbot (one-shot)
-#  docker_container:
-#    name: proxy-certbot
-#    hostname: proxy-certbot
-#    image: local/proxy_certbot:latest
-#    cleanup: yes
-#    detach: "no"
-#    volumes:
-#      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
-#      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
-#      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt"
-#    networks:
-#      - name: proxy_net
-#    entrypoint: [
-#        "certbot certonly --webroot --non-interactive --agree-tos --force-renewal ",
-#        "-w /var/www/certbot ",
-#        "--email {{ item.value.email }} ",
-#        "-d {{ item.key }} ",
-#        "--rsa-key-size {{ proxy_rsa_keysize }} "
-#      ]
-#  loop: "{{ domains | dict2items }}"
+# Run certbot one-shot to request letsencrypt certificate
+- name: Start Container - proxy-certbot (one-shot)
+  docker_container:
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: local/proxy_certbot:latest
+    cleanup: yes
+    detach: "no"
+    volumes:
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt"
+    networks:
+      - name: proxy_net
+    entrypoint:
+      - "certbot certonly --webroot --non-interactive --agree-tos --force-renewal "
+      - "-w /var/www/certbot "
+      - "--email {{ item.value.email }} "
+      - "-d {{ item.key }} "
+      - "--rsa-key-size {{ proxy_rsa_keysize }}"
+  loop: "{{ domains | dict2items }}"
 
-## Reload nginx in the previously started container
-#- name: Run bash Command - reload nginx in container
-#  delegate_to: proxy-nginx
-#  raw: nginx -s reload
+# Reload nginx in the previously started container
+- name: Run bash Command - reload nginx in container
+  delegate_to: proxy-nginx
+  raw: nginx -s reload
 
-## Start certbot container
-#- name: Start Container - proxy-certbot
-#  docker_container:
-#    name: proxy-certbot
-#    hostname: proxy-certbot
-#    image: local/proxy_certbot:latest
-#    restart_policy: unless-stopped
-#    volumes:
-#      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
-#      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
-#    networks:
-#      - name: proxy_net
+# Start certbot container
+- name: Start Container - proxy-certbot
+  docker_container:
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: local/proxy_certbot:latest
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+    networks:
+      - name: proxy_net
