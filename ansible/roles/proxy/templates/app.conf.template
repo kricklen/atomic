@@ -3,6 +3,8 @@ server {
     server_name {{ domains | list | join(" ") }};
     server_tokens off;
 
+    client_max_body_size 0;
+
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
@@ -17,6 +19,8 @@ server {
     listen 443 ssl;
     server_name {{ domain }};
     server_tokens off;
+
+    client_max_body_size 0;
 
     ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;

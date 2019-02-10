@@ -18,14 +18,14 @@
     - ./setup-vars.yml
 
   roles:
-#    - cockpit_ws
-#    - role: docker_builds
-#      when: run_mode == 'install'
-#    - fail2ban
-#    - ddclient
-#    - samba
-#    - nextcloud
+    - cockpit_ws
+    - role: docker_builds
+      when: run_mode == 'install'
+    - fail2ban
+    - ddclient
+    - samba
+    - nextcloud
     - proxy
-#    - plex
-#    - tor_relay
+    - plex
+    - tor_relay
 #    - ouroboros

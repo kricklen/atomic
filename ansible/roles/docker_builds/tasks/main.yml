@@ -1,3 +1,9 @@
+- name: Build Image - ddclient
+  docker_image:
+    path: "{{ role_path }}/ddclient"
+    name: local/ddclient
+    force: yes
+
 - name: Build Image - nextcloud_fpm
   docker_image:
     path: "{{ role_path }}/nextcloud_fpm"
@@ -26,4 +32,10 @@
   docker_image:
     path: "{{ role_path }}/samba"
     name: local/samba
+    force: yes
+
+- name: Build Image - tor_relay
+  docker_image:
+    path: "{{ role_path }}/tor_relay"
+    name: local/tor_relay
     force: yes
