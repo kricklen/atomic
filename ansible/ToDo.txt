@@ -1,4 +1,4 @@
 1. Make firewalld, docker and fail2ban work together properly
 2. Make cockpit-ws secure with 2fa and cert
-3. Get ddns domain for cockpit-ws and config proxy/certbot
+3. Get ddns domain for cockpit-ws
 4. Publish cockpit-ws

@@ -3,6 +3,10 @@ domains:
     token: abc123
     email: a@b.c
 
+# For example, if DNS is configured in Fritzbox
+# and nextcloud etc. should be available by servername
+server_name: <servername>.fritz.box
+
 samba_user_name: samba
 samba_user_id:   1000
 samba_group_name: users

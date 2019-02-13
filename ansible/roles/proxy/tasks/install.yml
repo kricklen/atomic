@@ -13,6 +13,15 @@
     - "{{ proxy_certbot_lib_path }}"
     - "{{ proxy_nginx_path }}"
 
+- name: Create Directory - self signed cert
+  file:
+    state: directory
+    path: "{{ proxy_certbot_conf_path }}/live/{{ server_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+
 - name: Create Directories - certbot live
   file:
     state: directory
@@ -44,7 +53,15 @@
     url: https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem
     dest: "{{ proxy_certbot_conf_path }}/ssl-dhparams.pem"
 
-# Create self signed certificate for first run
+# Create self signed certificate for local access
+- name: Create Certificate - proxy self signed (local)
+  command: >
+    openssl req -x509 -nodes -newkey rsa:4096 -days 9999 
+    -keyout '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/privkey.pem'
+    -out '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/fullchain.pem'
+    -subj '/CN=localhost'
+
+# Create self signed certificate(s) for first run
 - name: Create Certificate - proxy self signed
   command: >
     openssl req -x509 -nodes -newkey rsa:1024 -days 1
@@ -66,9 +83,9 @@
     image: local/proxy_nginx:latest
     restart_policy: unless-stopped
     volumes:
-      - "{{ proxy_nginx_path }}:/etc/nginx/conf.d"
-      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
-      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+      - "{{ proxy_nginx_path }}:/etc/nginx/conf.d:Z"
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot:ro,z"
     ports:
       - "80:80"
       - "443:443"
@@ -105,9 +122,9 @@
     cleanup: yes
     detach: "no"
     volumes:
-      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
-      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
-      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt"
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
+      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt:Z"
     networks:
       - name: proxy_net
     entrypoint:
@@ -131,7 +148,8 @@
     image: local/proxy_certbot:latest
     restart_policy: unless-stopped
     volumes:
-      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt"
-      - "{{ proxy_certbot_www_path }}:/var/www/certbot"
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
+      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt:Z"
     networks:
       - name: proxy_net

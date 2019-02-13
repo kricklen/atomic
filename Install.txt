@@ -5,3 +5,27 @@ systemctl disable firewalld
 # Only enable, config and start happens via ansible
 systemctl enable fail2ban
 
+# Nextcloud installation must be finished manually.
+# Trusted domains must be added manually if more than one domain
+# or local access via server_name is requierd.
+
+# Securing the Server:
+# We want root lock down the root user for required uses only, so
+# ssh login from external ip addresses should be forbidden.
+# Instead a new admin user should be added, which has root access
+# to cockpit. The new admin must be secured two factor authentication
+# when logging into the system.
+# 2fa can be achieved with pam module from google. It is possible to
+# enable 2fa for certain users only, but it has to be initialized for
+# each user manually. 
+# how-to for centos:
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-centos-7
+# This can be ported to fedora atomic.
+#
+# Additionally, ssh login for root must be restricted to allow local
+# connections only. This can be achieved by changing sshd_conf:
+# ...
+# PermitRootLogin no
+# ...
+# Match Address 127.0.0.1,192.168.178.0/24,172.16.0.0/12,10.0.0.0/8
+#   PermitRootLogin yes

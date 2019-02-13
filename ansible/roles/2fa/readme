@@ -1,0 +1,4 @@
+Make role for installing google-authenticator in:
+- pam.d
+- sshd_conf
+for admin user and disable remote ssh root login.

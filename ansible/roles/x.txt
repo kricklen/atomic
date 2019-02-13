@@ -1,1 +1,0 @@
-                "RUN": "/usr/bin/docker run -d --privileged --pid=host -v /:/host IMAGE /container/atomic-run --local-ssh",
