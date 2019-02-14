@@ -1,7 +1,9 @@
 # Install packages/enable services:
-rpm-ostree install git ansible fail2ban
+rpm-ostree install git ansible fail2ban google-authenticator
+
 # firewalld doesn't work properly with docker and fail2ban atm.
 systemctl disable firewalld
+
 # Only enable, config and start happens via ansible
 systemctl enable fail2ban
 
