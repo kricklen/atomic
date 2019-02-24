@@ -1,0 +1,23 @@
+# Remove web-web (nginx) to serve static html content
+- name: Stop and Remove Container - web-nginx
+  docker_container:
+    state: absent
+    name: web-nginx
+
+# Remove web-fpm docker container
+- name: Stop and Remove Container - web-fpm
+  docker_container:
+    state: absent
+    name: web-fpm
+
+# Remove web_net network
+- name: Remove Docker Network - web_net
+  docker_network:
+    state: absent
+    name: web_net
+
+# Delete User for web
+- name: Delete User - web
+  user:
+    state: absent
+    name: "{{ web_user_name }}"

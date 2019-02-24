@@ -1,0 +1,11 @@
+---
+web_user_name:  "web"
+web_user_id:    1058
+web_group_name: "users"
+web_group_id:   100
+
+web_www_dir:    "/mnt/web/www"
+web_nginx_dir:  "/mnt/web/nginx"
+
+web_volume_list:
+  - "{{ web_www_dir }}:/var/www/html:z"

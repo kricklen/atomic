@@ -1,0 +1,79 @@
+# Create User for web
+- name: Create User - web
+  user:
+    state: present
+    name: "{{ web_user_name }}"
+    comment: User for web docker
+    system: "no"
+    create_home: "no"
+    non_unique: yes
+    uid: "{{ web_user_id }}"
+    group: "{{ web_group_name }}"
+
+# Create directories
+- name: Create Directories - web
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ web_user_name }}"
+    group: "{{ web_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+  loop:
+    - "{{ web_www_dir }}"
+    - "{{ web_nginx_dir }}"
+
+# Copy nginx.conf
+- name: Copy Template - nginx.conf.template -> nginx.conf
+  template:
+    src: nginx.conf.template
+    dest: "{{ web_nginx_dir }}/nginx.conf"
+    owner: "{{ web_user_name }}"
+    group: "{{ web_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+# Create proxy network
+- name: Create Docker Network - proxy_net
+  docker_network:
+    name: proxy_net
+
+# Create web_net network
+- name: Create Docker Network - web_net
+  docker_network:
+    name: web_net
+
+# Start web-fpm docker container
+- name: Start Container - web-fpm
+  docker_container:
+    name: web-fpm
+    hostname: web-fpm
+    image: fpm-alpine:latest
+    user: "{{ web_user_id }}:{{ web_group_id }}"
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ web_www_dir }}:/var/www/html:z"
+    purge_networks: yes
+    networks:
+      - name: web_net
+
+# Start web-nginx (nginx) to serve static html content
+- name: Start Container - web-nginx
+  docker_container:
+    name: web-nginx
+    hostname: web-nginx
+    image: nginx:alpine
+    user: "{{ web_user_id }}:{{ web_group_id }}"
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ web_www_dir }}:/var/www/html:z,ro"
+      - "{{ web_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:z,ro"
+    purge_networks: yes
+    networks:
+      - name: proxy_net
+      - name: web_net

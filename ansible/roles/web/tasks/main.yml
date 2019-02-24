@@ -1,0 +1,8 @@
+# Include tasks for creating web
+- name: Install web
+  import_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall web
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"
