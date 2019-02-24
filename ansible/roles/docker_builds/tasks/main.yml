@@ -16,6 +16,18 @@
     name: local/nextcloud_nginx
     force: yes
 
+- name: Build Image - web_nginx
+  docker_image:
+    path: "{{ role_path }}/web_nginx"
+    name: local/web_nginx
+    force: yes
+
+- name: Build Image - web_fpm
+  docker_image:
+    path: "{{ role_path }}/web_fpm"
+    name: local/web_fpm
+    force: yes
+
 - name: Build Image - proxy_certbot
   docker_image:
     path: "{{ role_path }}/proxy_certbot"
