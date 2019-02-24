@@ -51,7 +51,7 @@
   docker_container:
     name: web-fpm
     hostname: web-fpm
-    image: fpm-alpine:latest
+    image: php:fpm-alpine
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
