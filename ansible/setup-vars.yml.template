@@ -1,7 +1,18 @@
-domains:
-  hom3.local:
-    token: abc123
-    email: a@b.c
+web:
+  domain: xxx.local
+  token: abc789
+  email: a@f.g
+
+nextcloud:
+  domain: hom3.local:
+  token: abc123
+  email: a@b.c
+
+cockpit:
+  domain: cockpit.local
+  token: abc456
+  email: a@d.e
+  host_id: 192.168.3.4
 
 # For example, if DNS is configured in Fritzbox
 # and nextcloud etc. should be available by servername
@@ -26,4 +37,3 @@ tor_nickname: NoNickName
 tor_contact:  ""
 tor_bw_rate:  "2 MByte"
 tor_bw_burst: "5 MByte"
-
