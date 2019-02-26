@@ -12,11 +12,12 @@ cockpit:
   domain: cockpit.local
   token: abc456
   email: a@d.e
-  host_id: 192.168.3.4
 
 # For example, if DNS is configured in Fritzbox
 # and nextcloud etc. should be available by servername
 server_name: <servername>.fritz.box
+server_ip: 192.168.3.4
+server_ip_range: 192.168.3.0/24
 
 samba_user_name: samba
 samba_user_id:   1000

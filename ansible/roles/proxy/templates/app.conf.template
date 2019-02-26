@@ -55,7 +55,7 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
-	proxy_pass		https://{{ cockpit.host_ip }}:9090;
+	proxy_pass		https://{{ server_ip }}:9090;
         proxy_http_version	1.1;
         proxy_buffering		off;
 
