@@ -33,8 +33,8 @@
       - 32413:32413/udp
       - 32414:32414/udp
     env:
-      PLEX_UID: "{{ plex_user_id }}"
-      PLEX_GID: "{{ plex_group_id }}"
+      PLEX_UID: "{{ plex_user_id | string }}"
+      PLEX_GID: "{{ plex_group_id | string }}"
       TZ: "Europe/Berlin"
       ADVERTISE_IP: "http://{{ server_ip }}:32400"
       ALLOWED_NETWORKS: "{{ server_ip_range }},172.16.0.0/16"
