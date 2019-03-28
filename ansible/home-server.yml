@@ -18,15 +18,16 @@
     - ./setup-vars.yml
 
   roles:
-    - cockpit_ws
+#    - cockpit_ws
 #    - role: docker_builds
 #      when: run_mode == 'install'
 #    - fail2ban
 #    - ddclient
 #    - samba
 #    - nextcloud
+#    - web
 #    - proxy
-#    - plex
+    - plex
 #    - tor_relay
 # Doesn't work for local images?
 #    - ouroboros
