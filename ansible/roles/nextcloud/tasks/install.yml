@@ -62,7 +62,7 @@
     state: started
     restart_policy: unless-stopped
     env:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
     volumes:
       - "{{ nextcloud_db_dir }}:/var/lib/mysql:Z"
     purge_networks: yes

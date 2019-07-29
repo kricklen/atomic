@@ -5,4 +5,4 @@ RUN apk --no-cache add shadow \
     && apk del shadow
 RUN touch /var/run/nginx.pid \
     && chown nginx:nginx /var/run/nginx.pid \
-
+    && chown -R nginx:nginx /var/cache/nginx
