@@ -1,0 +1,28 @@
+# Global
+timezone: "Europe/Berlin"
+
+
+# ddclient
+ddclient_user_name:  "ddclient"
+ddclient_user_id:    1050
+ddclient_group_name: "users"
+ddclient_group_id:   100
+
+ddclient_config_dir: "/mnt/ddclient"
+
+# Tor Relay account
+tor_user_name: tor
+tor_user_id: 1055
+tor_group_name: users
+tor_group_id: 100
+
+tor_config_dir: /mnt/tor
+tor_data_dir:   /mnt/tor/data
+
+# Settings for torrc
+tor_or_port:  {{ tor_or_port | default('22223') }}
+tor_dir_port: {{ tor_dir_port | default('22233') }}
+tor_nickname: {{ tor_nickname | default('no-nickname') }}
+tor_contact:  {{ tor_contact | default('no-contact') }}
+tor_bw_rate:  {{ tor_bw_rate | default('4 MByte') }}
+tor_bw_burst: {{ tor_bw_burst | default('7 MByte') }}

@@ -1,0 +1,8 @@
+# Include tasks for creating ddclient
+- name: Install ddclient
+  import_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall ddclient
+  import_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"
