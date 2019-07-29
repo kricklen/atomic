@@ -1,0 +1,17 @@
+#
+# Minimal torrc so tor will work out of the box
+#
+#User tor
+PIDFile /var/run/tor/tor.pid
+DataDirectory /var/lib/tor/data
+Log notice stdout
+
+# Relay Configuration
+ORPort {{ tor_or_port }}
+DirPort {{ tor_dir_port }}
+Nickname {{ tor_nickname }}
+ContactInfo {{ tor_contact }}
+RelayBandwidthRate {{ tor_bw_rate }}
+RelayBandwidthBurst {{ tor_bw_burst }}
+ExitPolicy reject *:*
+
