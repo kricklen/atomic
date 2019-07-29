@@ -1,0 +1,6 @@
+- name: Deploy home stack
+  docker_stack:
+    state: present
+    name: Home Stack
+    compose:
+      - docker-compose.yml
