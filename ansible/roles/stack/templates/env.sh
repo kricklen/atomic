@@ -7,3 +7,5 @@ export timezone=Europe/Berlin
 export ddclient_user_id=$(id -u ddclient)
 export ddclient_group_id=$(id -u ddclient)
 export ddclient_config_dir=/mnt/ddclient
+
+docker stack deploy -c ./docker-compose.yml HomeServer
