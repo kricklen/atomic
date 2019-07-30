@@ -34,11 +34,11 @@ services:
       restart_policy:
         condition: unless-stopped
     volumes:
-      - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
+      - "${ddclient_config_dir}/ddclient.conf:/etc/ddclient.conf:Z"
     env:
-      PGID: "{{ ddclient_group_id }}"
-      PUID: "{{ ddclient_user_id }}"
-      TZ: "{{ timezone }}"
+      PGID: "${ddclient_group_id}"
+      PUID: "${ddclient_user_id}"
+      TZ: "${timezone}"
     purge_networks: yes
     networks:
       - name: ddclient_net

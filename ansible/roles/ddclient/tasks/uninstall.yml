@@ -1,17 +1,17 @@
 # Start the ddclient docker container with prepared config file
-- name: Stop and Remove Container - ddclient
-  docker_container:
-    state: absent
-    name: ddclient
-    hostname: ddclient
-    image: linuxserver/ddclient
-    keep_volumes: "no"
+# - name: Stop and Remove Container - ddclient
+#   docker_container:
+#     state: absent
+#     name: ddclient
+#     hostname: ddclient
+#     image: linuxserver/ddclient
+#     keep_volumes: "no"
 
 # Remove network
-- name: Remove Docker Network - ddclient
-  docker_network:
-    state: absent
-    name: ddclient_net
+# - name: Remove Docker Network - ddclient
+#   docker_network:
+#     state: absent
+#     name: ddclient_net
 
 # Create User for ddclient
 - name: Delete User - ddclient
