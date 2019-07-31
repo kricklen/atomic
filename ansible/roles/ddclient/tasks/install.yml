@@ -37,19 +37,21 @@
     name: ddclient_net
 
 # Start the ddclient docker container with prepared config file
-# - name: Start Container - ddclient
-#   docker_container:
-#     name: ddclient
-#     hostname: ddclient
-#     image: local/ddclient:latest
-#     state: started
-#     restart_policy: unless-stopped
-#     volumes:
-#       - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
-#     env:
-#       PGID: "{{ ddclient_group_id }}"
-#       PUID: "{{ ddclient_user_id }}"
-#       TZ: "Europe/Berlin"
-#     purge_networks: yes
-#     networks:
-#       - name: ddclient_net
+- name: Start Container - ddclient
+  docker_swarm_service:
+    name: ddclient
+    hostname: ddclient
+    image: local/ddclient:latest
+    restart_policy: on-failure
+    user: ddclient
+    limits:
+      cpus: "0.5"
+      memory: 256M
+    volumes:
+      - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
+    env:
+      PGID: "{{ ddclient_group_id }}"
+      PUID: "{{ ddclient_user_id }}"
+      TZ: "Europe/Berlin"
+    networks:
+      - name: ddclient_net

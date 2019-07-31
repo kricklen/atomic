@@ -35,16 +35,16 @@
     setype: "{{ se_file_type }}"
 
 # Start the tor_relay docker container with prepared config file
-- name: Start Container - tor_relay
-  docker_container:
-    name: tor_relay
-    hostname: tor_relay
-    image: local/tor_relay:latest
-    state: started
-    restart_policy: unless-stopped
-    ports:
-      - "{{ tor_or_port }}:{{ tor_or_port }}"
-      - "{{ tor_dir_port }}:{{ tor_dir_port }}"
-    volumes:
-      - "{{ tor_config_dir }}:/etc/tor:Z"
-      - "{{ tor_data_dir }}:/var/lib/tor/data:Z"
+# - name: Start Container - tor_relay
+#   docker_container:
+#     name: tor_relay
+#     hostname: tor_relay
+#     image: local/tor_relay:latest
+#     state: started
+#     restart_policy: unless-stopped
+#     ports:
+#       - "{{ tor_or_port }}:{{ tor_or_port }}"
+#       - "{{ tor_dir_port }}:{{ tor_dir_port }}"
+#     volumes:
+#       - "{{ tor_config_dir }}:/etc/tor:Z"
+#       - "{{ tor_data_dir }}:/var/lib/tor/data:Z"
