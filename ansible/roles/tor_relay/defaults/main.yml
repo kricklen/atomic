@@ -8,9 +8,9 @@ tor_config_dir: /mnt/tor
 tor_data_dir:   /mnt/tor/data
 
 # Settings for torrc
-#tor_or_port:  22223
-#tor_dir_port: 22233
-#tor_nickname: no-nickname
-#tor_contact:  no-contact
-#tor_bw_rate:  "4 MByte"
-#tor_bw_burst: "7 MByte"
+tor_or_port:  22223
+tor_dir_port: 22233
+tor_nickname: no-nickname
+tor_contact:  no-contact
+tor_bw_rate:  "4 MByte"
+tor_bw_burst: "7 MByte"
