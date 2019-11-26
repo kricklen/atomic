@@ -11,6 +11,8 @@ server {
 
     client_max_body_size 0;
 
+    proxy_max_temp_file_size 0;
+
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
@@ -33,6 +35,8 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+    proxy_max_temp_file_size 0;
+
     location / {
 	proxy_pass  http://nextcloud-web:8080;
         proxy_set_header    Host                $http_host;
@@ -53,6 +57,8 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/{{ cockpit.domain }}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    proxy_max_temp_file_size 0;
 
     location / {
 	proxy_pass		https://{{ server_ip }}:9090;
@@ -84,6 +90,8 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+    proxy_max_temp_file_size 0;
+
     location / {
 	proxy_pass  http://nextcloud-web:8080;
         proxy_set_header    Host                $http_host;
@@ -104,6 +112,8 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/{{ web.domain }}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    proxy_max_temp_file_size 0;
 
     location / {
 	proxy_pass  http://web-nginx:8080;
