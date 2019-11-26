@@ -1,4 +1,24 @@
-1. Make firewalld, docker and fail2ban work together properly
-2. Make cockpit-ws secure with 2fa and cert
-3. Get ddns domain for cockpit-ws
-4. Publish cockpit-ws
+Overview:
+
+Container       Has Net     Has User    Has Volumes
+---------------------------------------------------
+Cockpit         -           -           -
+ddclient        x           x           x
+nextcloud-db    x           -           x
+nextcloud-fpm   x           x           x
+nextcloud-web   x           x           x
+plex            -           x           x
+proxy-certbot   x           -           x
+proxy-nginx     x           -           x
+samba           -           -           x
+tor-relay       -           x           x
+web-fpm         x           x           x
+web-nginx       x           x           x
+
+1. Implement users for proxy and db containers
+2. Implement resource limits for containers, mostly plex and samba
+3. Implement own network for cockpit and tor
+4. Fix proxy-nginx, it does not wait for nextcloud-web, keeps failing
+5. Fix proxy-certbot, blocks nextcloud-web or fpm because of ip conflicts?
+
+x. Make firewalld, docker and fail2ban work together properly
