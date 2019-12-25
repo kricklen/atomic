@@ -5,10 +5,17 @@ use=web, web=checkip.spdns.de
 server=update.spdns.de
 #ssl=yes
 
-{% for domain in domains %}
-# Domain {{ domain }}
-login={{ domain }}
-password='{{ domains[domain].token }}'
-{{ domain }}
+# Domain {{ web.domain }}
+login={{ web.domain }}
+password='{{ web.token }}'
+{{ web.domain }}
 
-{% endfor %}
+# Domain {{ nextcloud.domain }}
+login={{ nextcloud.domain }}
+password='{{ nextcloud.token }}'
+{{ nextcloud.domain }}
+
+# Domain {{ cockpit.domain }}
+login={{ cockpit.domain }}
+password='{{ cockpit.token }}'
+{{ cockpit.domain }}

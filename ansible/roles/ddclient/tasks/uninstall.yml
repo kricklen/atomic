@@ -21,7 +21,7 @@
     name: "{{ ddclient_user_name }}"
 
 # Remove config directory
-- name: "Remove Directory - {{ ddclient_config_dir }}"
-  file:
-    state: absent
-    path: "{{ ddclient_config_dir }}"
+#- name: "Remove Directory - {{ ddclient_config_dir }}"
+#  file:
+#    state: absent
+#    path: "{{ ddclient_config_dir }}"

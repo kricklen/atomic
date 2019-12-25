@@ -41,15 +41,19 @@
   docker_container:
     name: ddclient
     hostname: ddclient
-    image: local/ddclient:latest
+#    image: local/ddclient:latest
+    image: linuxserver/ddclient:latest
+#    user: "{{ ddclient_user_id }}:{{ ddclient_group_id }}"
     state: started
     restart_policy: unless-stopped
     volumes:
-      - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
+#      - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
+      - "{{ ddclient_config_dir }}:/config:Z"
     env:
-      PGID: "{{ ddclient_group_id }}"
-      PUID: "{{ ddclient_user_id }}"
-      TZ: "Europe/Berlin"
+        PGID: "{{ ddclient_group_id | quote }}"
+        PUID: "{{ ddclient_user_id | quote }}"
+        TZ: "Europe/Berlin"
     purge_networks: yes
+    networks_cli_compatible: no
     networks:
       - name: ddclient_net
