@@ -9,6 +9,8 @@ server {
     server_name {{ server_name }} {{ web.domain }} {{ nextcloud.domain }} {{ cockpit.domain }};
     server_tokens off;
 
+    add_header X-Frame-Options "SAMEORIGIN";
+
     client_max_body_size 0;
 
     proxy_max_temp_file_size 0;
@@ -27,6 +29,8 @@ server {
     listen 443 ssl;
     server_name {{ server_name }};
     server_tokens off;
+
+    add_header X-Frame-Options "SAMEORIGIN";
 
     client_max_body_size 0;
 
@@ -50,6 +54,9 @@ server {
     listen 443 ssl;
     server_name {{ cockpit.domain }};
     server_tokens off;
+
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
+    add_header X-Frame-Options "SAMEORIGIN";
 
     client_max_body_size 0;
 
@@ -83,6 +90,9 @@ server {
     server_name {{ nextcloud.domain }};
     server_tokens off;
 
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
+    add_header X-Frame-Options "SAMEORIGIN";
+
     client_max_body_size 0;
 
     ssl_certificate /etc/letsencrypt/live/{{ nextcloud.domain }}/fullchain.pem;
@@ -105,6 +115,9 @@ server {
     listen 443 ssl;
     server_name {{ web.domain }};
     server_tokens off;
+
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
+    add_header X-Frame-Options "SAMEORIGIN";
 
     client_max_body_size 0;
 
