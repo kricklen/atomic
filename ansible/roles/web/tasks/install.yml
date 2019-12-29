@@ -67,6 +67,7 @@
     name: web-nginx
     hostname: web-nginx
     image: local/web_nginx:latest
+#    image: nginx:alpine
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
