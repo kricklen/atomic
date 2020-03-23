@@ -1,4 +1,4 @@
-FROM certbot/certbot
+FROM certbot/certbot:latest
 
 COPY certbot_renew.sh /
 COPY add_crontab.sh /
