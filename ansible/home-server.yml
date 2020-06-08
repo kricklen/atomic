@@ -25,9 +25,9 @@
 #    - ddclient
 #    - samba
 #    - nextcloud
-    - web
+#    - web
 #    - proxy
 #    - plex
-#    - tor_relay
+    - tor_relay
 # Doesn't work for local images?
 #    - ouroboros

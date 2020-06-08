@@ -39,7 +39,8 @@
   docker_container:
     name: tor_relay
     hostname: tor_relay
-    image: local/tor_relay:latest
+    memory: 1024M
+    image: docker.io/chriswayg/tor-alpine:latest
     state: started
     restart_policy: unless-stopped
     ports:
