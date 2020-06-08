@@ -1,8 +1,8 @@
 #
 # Minimal torrc so tor will work out of the box
 #
-#User tor
-PIDFile /var/run/tor/tor.pid
+User tord
+#PIDFile /var/run/tor/tor.pid
 DataDirectory /var/lib/tor/data
 Log notice stdout
 
