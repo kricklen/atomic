@@ -6,8 +6,6 @@
     comment: User for tor_relay docker
     system: "yes"
     create_home: "no"
-    uid: "{{ tor_user_id }}"
-    group: "{{ tor_group_name}}"
 
 # Remove the tor_relay docker container with prepared config file
 - name: Stop and Remove Container - tor_relay
