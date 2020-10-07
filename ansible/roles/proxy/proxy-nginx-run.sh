@@ -11,3 +11,4 @@ docker run -d \
   --hostname proxy-nginx-2 \
   local/proxy_nginx:latest
 
+docker network connect bridge proxy-nginx-2
