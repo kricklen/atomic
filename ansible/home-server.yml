@@ -26,8 +26,8 @@
 #    - samba
 #    - nextcloud
 #    - web
-    - proxy
+#    - proxy
 #    - plex
-#    - tor_relay
+    - tor_relay
 # Doesn't work for local images?
 #    - ouroboros
