@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t local/proxy_nginx .
+docker build -t kricklen/proxy_nginx .

@@ -1,3 +1,3 @@
 #!/bin/bash
 docker pull nextcloud:fpm-alpine
-docker build -t local/nextcloud_fpm .
+docker build -t kricklen/nextcloud_fpm .

@@ -1,3 +1,3 @@
 #!/bin/bash
 docker pull alpine:latest
-docker build -t local/samba .
+docker build -t kricklen/samba .
