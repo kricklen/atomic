@@ -41,7 +41,7 @@
     hostname: tor_relay
     memory: 1024M
 #    image: docker.io/chriswayg/tor-alpine:latest
-    image: local/tor_relay:latest
+    image: kricklen/tor_relay:latest
     state: started
     restart_policy: unless-stopped
     ports:
