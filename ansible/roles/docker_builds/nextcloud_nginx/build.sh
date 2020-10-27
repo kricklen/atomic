@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t local/nextcloud_nginx .
+docker build -t kricklen/nextcloud_nginx .
