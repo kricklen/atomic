@@ -28,7 +28,7 @@
     state: started
     name: samba
     hostname: samba
-    image: local/samba:latest
+    image: kricklen/samba:latest
     restart_policy: unless-stopped
     volumes:
       "{{ samba_volume_list }}"
