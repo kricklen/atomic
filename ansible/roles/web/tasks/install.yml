@@ -51,7 +51,7 @@
   docker_container:
     name: web-fpm
     hostname: web-fpm
-    image: local/web_fpm:latest
+    image: kricklen/web_fpm:latest
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
@@ -66,8 +66,7 @@
   docker_container:
     name: web-nginx
     hostname: web-nginx
-    image: local/web_nginx:latest
-#    image: nginx:alpine
+    image: kricklen/web_nginx:latest
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
