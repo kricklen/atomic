@@ -74,7 +74,7 @@
   docker_container:
     name: "{{ nextcloud_fpm_name }}"
     hostname: "{{ nextcloud_fpm_name }}"
-    image: local/nextcloud_fpm:latest
+    image: kricklen/nextcloud_fpm:latest
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
@@ -89,7 +89,7 @@
   docker_container:
     name: nextcloud-web
     hostname: nextcloud-web
-    image: local/nextcloud_nginx:latest
+    image: kricklen/nextcloud_nginx:latest
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
