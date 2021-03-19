@@ -80,7 +80,7 @@
   docker_container:
     name: proxy-nginx
     hostname: proxy-nginx
-    image: local/proxy_nginx:latest
+    image: kricklen/proxy_nginx:latest
     restart_policy: unless-stopped
     volumes:
       - "{{ proxy_nginx_path }}:/etc/nginx/conf.d:Z"
@@ -118,7 +118,7 @@
   docker_container:
     name: proxy-certbot
     hostname: proxy-certbot
-    image: local/proxy_certbot:latest
+    image: kricklen/proxy_certbot:latest
     cleanup: yes
     detach: "no"
     volumes:
@@ -145,7 +145,7 @@
   docker_container:
     name: proxy-certbot
     hostname: proxy-certbot
-    image: local/proxy_certbot:latest
+    image: kricklen/proxy_certbot:latest
     restart_policy: unless-stopped
     volumes:
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
