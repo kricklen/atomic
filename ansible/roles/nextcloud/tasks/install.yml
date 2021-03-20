@@ -1,51 +1,51 @@
-# Create User for nextcloud
-- name: Create User - nextcloud
-  user:
-    state: present
-    name: "{{ nextcloud_user_name }}"
-    comment: User for nextcloud docker
-    system: "no"
-    create_home: "no"
-    non_unique: yes
-    uid: "{{ nextcloud_user_id }}"
-    group: "{{ nextcloud_group_name }}"
+# # Create User for nextcloud
+# - name: Create User - nextcloud
+#   user:
+#     state: present
+#     name: "{{ nextcloud_user_name }}"
+#     comment: User for nextcloud docker
+#     system: "no"
+#     create_home: "no"
+#     non_unique: yes
+#     uid: "{{ nextcloud_user_id }}"
+#     group: "{{ nextcloud_group_name }}"
 
-# Create directories
-- name: Create Directories - nextcloud
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ nextcloud_user_name }}"
-    group: "{{ nextcloud_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-    recurse: yes
-  loop:
-    - "{{ nextcloud_www_dir }}"
-    - "{{ nextcloud_nginx_dir }}"
-    - "{{ nextcloud_db_dir }}"
+# # Create directories
+# - name: Create Directories - nextcloud
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ nextcloud_user_name }}"
+#     group: "{{ nextcloud_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
+#     recurse: yes
+#   loop:
+#     - "{{ nextcloud_www_dir }}"
+#     - "{{ nextcloud_nginx_dir }}"
+#     - "{{ nextcloud_db_dir }}"
 
-# Copy nginx.conf
-- name: Copy Template - nginx.conf.template -> nginx.conf
-  template:
-    src: nginx.conf.template
-    dest: "{{ nextcloud_nginx_dir }}/nginx.conf"
-    owner: "{{ nextcloud_user_name }}"
-    group: "{{ nextcloud_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
+# # Copy nginx.conf
+# - name: Copy Template - nginx.conf.template -> nginx.conf
+#   template:
+#     src: nginx.conf.template
+#     dest: "{{ nextcloud_nginx_dir }}/nginx.conf"
+#     owner: "{{ nextcloud_user_name }}"
+#     group: "{{ nextcloud_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
 
-# Create proxy network
-- name: Create Docker Network - proxy_net
-  docker_network:
-    name: proxy_net
+# # Create proxy network
+# - name: Create Docker Network - proxy_net
+#   docker_network:
+#     name: proxy_net
 
-# Create nextcloud_net network
-- name: Create Docker Network - nextcloud_net
-  docker_network:
-    name: nextcloud_net
+# # Create nextcloud_net network
+# - name: Create Docker Network - nextcloud_net
+#   docker_network:
+#     name: nextcloud_net
 
 # Create list of mounted volumes for system and external dirs
 - name: Set facts nextcloud_shares
@@ -53,21 +53,21 @@
     nextcloud_volume_list: "{{ nextcloud_volume_list + [ item.key + ':' + item.value + ':z' ] }}"
   loop: "{{ nextcloud_shares | dict2items }}"
 
-# Start nextcloud-db docker container
-- name: Start Container - nextcloud-db
-  docker_container:
-    name: nextcloud-db
-    hostname: nextcloud-db
-    image: mariadb:latest
-    state: started
-    restart_policy: unless-stopped
-    env:
-      "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
-    volumes:
-      - "{{ nextcloud_db_dir }}:/var/lib/mysql:Z"
-    purge_networks: yes
-    networks:
-      - name: nextcloud_net
+# # Start nextcloud-db docker container
+# - name: Start Container - nextcloud-db
+#   docker_container:
+#     name: nextcloud-db
+#     hostname: nextcloud-db
+#     image: mariadb:latest
+#     state: started
+#     restart_policy: unless-stopped
+#     env:
+#       "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
+#     volumes:
+#       - "{{ nextcloud_db_dir }}:/var/lib/mysql:Z"
+#     purge_networks: yes
+#     networks:
+#       - name: nextcloud_net
 
 # Start nextcloud-fpm docker container
 - name: "Start Container - {{ nextcloud_fpm_name }}"

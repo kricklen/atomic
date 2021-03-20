@@ -24,10 +24,10 @@
 #    - fail2ban
 #    - ddclient
 #    - samba
-#    - nextcloud
+    - nextcloud
 #    - web
 #    - proxy
 #    - plex
-    - tor_relay
+#    - tor_relay
 # Doesn't work for local images?
 #    - ouroboros
