@@ -1,79 +1,79 @@
-# # Create directories
-# - name: Create Directories - proxy
-#   file:
-#     state: directory
-#     path: "{{ item }}"
-#     seuser: "{{ se_file_user }}"
-#     serole: "{{ se_file_role }}"
-#     setype: "{{ se_file_type }}"
-#     recurse: yes
-#   with_items:
-#     - "{{ proxy_certbot_conf_path }}"
-#     - "{{ proxy_certbot_www_path }}"
-#     - "{{ proxy_certbot_lib_path }}"
-#     - "{{ proxy_nginx_path }}"
+# Create directories
+- name: Create Directories - proxy
+  file:
+    state: directory
+    path: "{{ item }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+  with_items:
+    - "{{ proxy_certbot_conf_path }}"
+    - "{{ proxy_certbot_www_path }}"
+    - "{{ proxy_certbot_lib_path }}"
+    - "{{ proxy_nginx_path }}"
 
-# - name: Create Directory - self signed cert
-#   file:
-#     state: directory
-#     path: "{{ proxy_certbot_conf_path }}/live/{{ server_name }}"
-#     seuser: "{{ se_file_user }}"
-#     serole: "{{ se_file_role }}"
-#     setype: "{{ se_file_type }}"
-#     recurse: yes
+- name: Create Directory - self signed cert
+  file:
+    state: directory
+    path: "{{ proxy_certbot_conf_path }}/live/{{ server_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
 
-# - name: Create Directories - certbot live
-#   file:
-#     state: directory
-#     path: "{{ proxy_certbot_conf_path }}/live/{{ item.key }}"
-#     seuser: "{{ se_file_user }}"
-#     serole: "{{ se_file_role }}"
-#     setype: "{{ se_file_type }}"
-#     recurse: yes
-#   loop: "{{ domains | dict2items }}"
+- name: Create Directories - certbot live
+  file:
+    state: directory
+    path: "{{ proxy_certbot_conf_path }}/live/{{ item.key }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+  loop: "{{ domains | dict2items }}"
 
-# # Copy app.conf
-# - name: Copy Template - app.conf.template -> app.conf
-#   template:
-#     src: app.conf.template
-#     dest: "{{ proxy_nginx_path }}/app.conf"
-#     seuser: "{{ se_file_user }}"
-#     serole: "{{ se_file_role }}"
-#     setype: "{{ se_file_type }}"
+# Copy app.conf
+- name: Copy Template - app.conf.template -> app.conf
+  template:
+    src: app.conf.template
+    dest: "{{ proxy_nginx_path }}/app.conf"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
 
-# # Download recommended nginx settings
-# - name: Download file - options-ssl-nginx.conf
-#   uri:
-#     url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf
-#     dest: "{{ proxy_certbot_conf_path }}/options-ssl-nginx.conf"
+# Download recommended nginx settings
+- name: Download file - options-ssl-nginx.conf
+  uri:
+    url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf
+    dest: "{{ proxy_certbot_conf_path }}/options-ssl-nginx.conf"
 
-# # Download recommended certbot settings
-# - name: Download file - ssl-dhparams.pem
-#   uri:
-#     url: https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem
-#     dest: "{{ proxy_certbot_conf_path }}/ssl-dhparams.pem"
+# Download recommended certbot settings
+- name: Download file - ssl-dhparams.pem
+  uri:
+    url: https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem
+    dest: "{{ proxy_certbot_conf_path }}/ssl-dhparams.pem"
 
-# # Create self signed certificate for local access
-# - name: Create Certificate - proxy self signed (local)
-#   command: >
-#     openssl req -x509 -nodes -newkey rsa:4096 -days 9999 
-#     -keyout '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/privkey.pem'
-#     -out '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/fullchain.pem'
-#     -subj '/CN=localhost'
+# Create self signed certificate for local access
+- name: Create Certificate - proxy self signed (local)
+  command: >
+    openssl req -x509 -nodes -newkey rsa:4096 -days 9999 
+    -keyout '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/privkey.pem'
+    -out '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/fullchain.pem'
+    -subj '/CN=localhost'
 
-# # Create self signed certificate(s) for first run
-# - name: Create Certificate - proxy self signed
-#   command: >
-#     openssl req -x509 -nodes -newkey rsa:1024 -days 1
-#     -keyout '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/privkey.pem'
-#     -out '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/fullchain.pem'
-#     -subj '/CN=localhost'
-#   loop: "{{ domains | dict2items }}"
+# Create self signed certificate(s) for first run
+- name: Create Certificate - proxy self signed
+  command: >
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1
+    -keyout '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/privkey.pem'
+    -out '{{ proxy_certbot_conf_path }}/live/{{ item.key }}/fullchain.pem'
+    -subj '/CN=localhost'
+  loop: "{{ domains | dict2items }}"
 
-# # Create proxy network
-# - name: Create Docker Network - proxy_net
-#   docker_network:
-#     name: proxy_net
+# Create proxy network
+- name: Create Docker Network - proxy_net
+  docker_network:
+    name: proxy_net
 
 # Start proxy-nginx docker container
 - name: Start Container - proxy-nginx
@@ -92,53 +92,53 @@
     networks:
       - name: proxy_net
 
-# # From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
-# # Add nginx docker to inventory
-# - name: Add to Inventory - proxy-nginx container
-#   add_host:
-#     name: proxy-nginx
-#     ansible_connection: docker
-#   changed_when: false
+# From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
+# Add nginx docker to inventory
+- name: Add to Inventory - proxy-nginx container
+  add_host:
+    name: proxy-nginx
+    ansible_connection: docker
+  changed_when: false
 
-# # Delete the dummy certs
-# - name: Delete Files - certbot dummy certificates
-#   file:
-#     state: absent
-#     path: "{{ proxy_certbot_conf_path }}/{{ item.0 }}/{{ item.1.key }}"
-#   loop: "{{ [  'live', 'archive' ] | product(domains | dict2items) | list }}"
+# Delete the dummy certs
+- name: Delete Files - certbot dummy certificates
+  file:
+    state: absent
+    path: "{{ proxy_certbot_conf_path }}/{{ item.0 }}/{{ item.1.key }}"
+  loop: "{{ [  'live', 'archive' ] | product(domains | dict2items) | list }}"
 
-# - name: Delete Files - certbot renewals
-#   file:
-#     state: absent
-#     path: "{{ proxy_certbot_conf_path }}/renewal/{{ item.key }}.conf"
-#   loop: "{{ domains | dict2items }}"
+- name: Delete Files - certbot renewals
+  file:
+    state: absent
+    path: "{{ proxy_certbot_conf_path }}/renewal/{{ item.key }}.conf"
+  loop: "{{ domains | dict2items }}"
 
-# # Run certbot one-shot to request letsencrypt certificate
-# - name: Start Container - proxy-certbot (one-shot)
-#   docker_container:
-#     name: proxy-certbot
-#     hostname: proxy-certbot
-#     image: kricklen/proxy_certbot:latest
-#     cleanup: yes
-#     detach: "no"
-#     volumes:
-#       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
-#       - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
-#       - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt:Z"
-#     networks:
-#       - name: proxy_net
-#     entrypoint:
-#       - "certbot certonly --webroot --non-interactive --agree-tos --force-renewal "
-#       - "-w /var/www/certbot "
-#       - "--email {{ item.value.email }} "
-#       - "-d {{ item.key }} "
-#       - "--rsa-key-size {{ proxy_rsa_keysize }}"
-#   loop: "{{ domains | dict2items }}"
+# Run certbot one-shot to request letsencrypt certificate
+- name: Start Container - proxy-certbot (one-shot)
+  docker_container:
+    name: proxy-certbot
+    hostname: proxy-certbot
+    image: kricklen/proxy_certbot:latest
+    cleanup: yes
+    detach: "no"
+    volumes:
+      - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
+      - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
+      - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt:Z"
+    networks:
+      - name: proxy_net
+    entrypoint:
+      - "certbot certonly --webroot --non-interactive --agree-tos --force-renewal "
+      - "-w /var/www/certbot "
+      - "--email {{ item.value.email }} "
+      - "-d {{ item.key }} "
+      - "--rsa-key-size {{ proxy_rsa_keysize }}"
+  loop: "{{ domains | dict2items }}"
 
-# # Reload nginx in the previously started container
-# - name: Run bash Command - reload nginx in container
-#   delegate_to: proxy-nginx
-#   raw: nginx -s reload
+# Reload nginx in the previously started container
+- name: Run bash Command - reload nginx in container
+  delegate_to: proxy-nginx
+  raw: nginx -s reload
 
 # Start certbot container
 - name: Start Container - proxy-certbot
