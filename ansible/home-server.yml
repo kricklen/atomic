@@ -24,9 +24,9 @@
 #    - fail2ban
 #    - ddclient
 #    - samba
-    - nextcloud
+#    - nextcloud
 #    - web
-#    - proxy
+    - proxy
 #    - plex
 #    - tor_relay
 # Doesn't work for local images?
