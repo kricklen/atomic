@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [[ $# -eq 3 ]]; then
-    git filter-branch --env-filter '
+    git filter-branch -f --env-filter '
     if [ "$GIT_COMMITTER_EMAIL" = "'$1'" ]; then
         export GIT_COMMITTER_NAME='$2'
         export GIT_COMMITTER_EMAIL='$3'
