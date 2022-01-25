@@ -7,8 +7,8 @@ DataDirectory /var/lib/tor/data
 Log notice stdout
 
 # Relay Configuration
-ORPort {{ tor_or_port }}
-DirPort {{ tor_dir_port }}
+ORPort {{ tor_or_port }} IPv4Only
+DirPort {{ tor_dir_port }} IPv4Only
 Nickname {{ tor_nickname }}
 ContactInfo {{ tor_contact }}
 RelayBandwidthRate {{ tor_bw_rate }}
