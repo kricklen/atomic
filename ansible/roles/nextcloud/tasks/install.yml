@@ -58,7 +58,7 @@
   docker_container:
     name: nextcloud-db
     hostname: nextcloud-db
-    image: mariadb:latest
+    image: kricklen/nextcloud_db:latest
     state: started
     restart_policy: unless-stopped
     env:
