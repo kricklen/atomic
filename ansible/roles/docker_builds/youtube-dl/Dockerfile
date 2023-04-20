@@ -1,5 +1,5 @@
 FROM python:alpine
-RUN pip install --upgrade youtube-dl && \
-    apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg && \
+    pip install yt-dlp
 WORKDIR /data
-ENTRYPOINT [ "youtube-dl" ]
+ENTRYPOINT [ "yt-dlp" ]

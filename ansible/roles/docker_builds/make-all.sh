@@ -31,3 +31,7 @@ cd ../web_nginx
 ./pull-and-build.sh
 ./push.sh
 
+cd ../youtube-dl
+./pull-and-build.sh
+./push.sh
+
