@@ -1,3 +1,3 @@
 #!/bin/bash
-docker pull centos:latest
-docker build -t kricklen/tor_relay:latest .
+docker pull lncm/tor:latest
+docker build -t kricklen/tor_relay-test:latest .
