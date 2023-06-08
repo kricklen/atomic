@@ -23,10 +23,10 @@
 #      when: run_mode == 'install'
 #    - fail2ban
 #    - ddclient
-#    - samba
+    - samba
 #    - nextcloud
 #    - web
-    - proxy
+#    - proxy
 #    - plex
 #    - tor_relay
 # Doesn't work for local images?
