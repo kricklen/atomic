@@ -4,7 +4,7 @@
     state: started
     name: cockpit_ws
     hostname: cockpit_ws
-    image: docker.io/cockpit/ws:latest
+    image: quay.io/cockpit/ws:latest
     restart_policy: unless-stopped
     pid_mode: host
     privileged: yes

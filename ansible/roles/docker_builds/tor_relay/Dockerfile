@@ -1,9 +1,14 @@
-FROM lncm/tor
+FROM ghcr.io/linuxserver/baseimage-alpine:amd64-edge
 
-# RUN useradd -r -u 19001 -g 100 tord \
-#     && chown -R tord /var/run/tor \
-#     && chown -R tord /etc/tor \
-#     && chown -R tord /var/lib/tor
+LABEL maintainer "Nicolas Coutin <ilshidur@gmail.com>"
 
-# USER tord
-#ENTRYPOINT [ "tor" ]
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV XDG_DATA_HOME="/config" \
+XDG_CONFIG_HOME="/config"
+ENV TZ Europe/Berlin
+
+RUN apk --no-cache add bash tzdata tor
+
+# EXPOSE 9001 9030
+
+CMD ["tor", "-f", "/config/torrc"]

@@ -3,6 +3,10 @@ cd nextcloud_fpm
 ./pull-and-build.sh
 ./push.sh
 
+cd ../nextcloud_db
+./pull-and-build.sh
+./push.sh
+
 cd ../nextcloud_nginx
 ./pull-and-build.sh
 ./push.sh
