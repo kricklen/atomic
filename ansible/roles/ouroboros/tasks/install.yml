@@ -15,10 +15,10 @@
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     env:
-      CLEANUP: true
-      INTERVAL: 3600
-      LOG_LEVEL: info
-      SELF_UPDATE: true
+      CLEANUP: "true"
+      INTERVAL: "3600"
+      LOG_LEVEL: "info"
+      SELF_UPDATE: "true"
       IGNORE: "mongo influxdb postgres mariadb"
       TZ: "Europe/Berlin"
     networks:
