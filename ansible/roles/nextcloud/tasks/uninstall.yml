@@ -1,38 +1,38 @@
-# Remove nextcloud-web (nginx) to serve static html content
 - name: Stop and Remove Container - nextcloud-web
-  docker_container:
+  community.docker.docker_container:
     state: absent
     name: nextcloud-web
-    hostname: nextcloud-web
-    image: nginx:alpine
-    keep_volumes: "no"
 
-# Remove nextcloud-fpm docker container
 - name: "Stop and Remove Container - {{ nextcloud_fpm_name }}"
-  docker_container:
+  community.docker.docker_container:
     state: absent
     name: "{{ nextcloud_fpm_name }}"
-    hostname: "{{ nextcloud_fpm_name }}"
-    image: nextcloud:fpm-alpine
-    keep_volumes: "no"
 
-# Remove nextcloud_net network
-- name: Remove Docker Network - nextcloud_net
-  docker_network:
+- name: "Stop and Remove Container - nextcloud-db"
+  community.docker.docker_container:
     state: absent
-    name: nextcloud_net
+    name: nextcloud-db
 
-# Remove directories
-- name: Remove Directories - nextcloud
-  file:
-    state: absent
-    path: "{{ item }}"
-  loop:
-#    - "{{ nextcloud_www_dir }}"
-    - "{{ nextcloud_nginx_dir }}"
+# - name: Remove Docker Network - nextcloud-public
+#   community.docker.docker_network:
+#     state: absent
+#     name: nextcloud-public
 
-# Delete User for nextcloud
+# - name: Remove Docker Network - nextcloud-private
+#   community.docker.docker_network:
+#     state: absent
+#     name: nextcloud-private
+
 - name: Delete User - nextcloud
-  user:
+  ansible.builtin.user:
     state: absent
     name: "{{ nextcloud_user_name }}"
+
+# # Remove directories
+# - name: Remove Directories - nextcloud
+#   file:
+#     state: absent
+#     path: "{{ item }}"
+#   loop:
+# #    - "{{ nextcloud_www_dir }}"
+#     - "{{ nextcloud_nginx_dir }}"

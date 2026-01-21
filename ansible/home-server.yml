@@ -1,7 +1,8 @@
 # Playbook for installing ddclient, nextcloud, samba etc.
 # on Fedora Atomic Host
 ---
-- hosts: localhost
+- name: Home Server
+  hosts: localhost
   connection: local
 
   vars:
@@ -18,12 +19,11 @@
     - ./setup-vars.yml
 
   roles:
+    - networks
 #    - cockpit_ws
-#    - role: docker_builds
-#      when: run_mode == 'install'
 #    - fail2ban
-#    - ddclient
-    - samba
+    - ddclient
+#    - samba
 #    - nextcloud
 #    - web
 #    - proxy

@@ -1,7 +1,7 @@
 ---
-ddclient_user_name:  "ddclient"
-ddclient_user_id:    1050
+ddclient_user_name: "ddclient"
+ddclient_user_id: 1050
 ddclient_group_name: "users"
-ddclient_group_id:   100
+ddclient_group_id: 100
 
 ddclient_config_dir: "/mnt/ddclient"

@@ -1,27 +1,24 @@
 # Start the ddclient docker container with prepared config file
 - name: Stop and Remove Container - ddclient
-  docker_container:
+  community.docker.docker_container:
     state: absent
     name: ddclient
-    hostname: ddclient
-    image: linuxserver/ddclient
-    keep_volumes: "no"
 
-# Remove network
-- name: Remove Docker Network - ddclient
-  docker_network:
-    state: absent
-    name: ddclient_net
+# # Remove network
+# - name: Remove Docker Network - ddclient
+#   community.docker.docker_network:
+#     state: absent
+#     name: ddclient-public
 
 # Create User for ddclient
 - name: Delete User - ddclient
-  user:
+  ansible.builtin.user:
     state: absent
-    remove: yes
+    remove: true
     name: "{{ ddclient_user_name }}"
 
-# Remove config directory
-#- name: "Remove Directory - {{ ddclient_config_dir }}"
+# # Remove config directory
+# - name: "Remove Directory - {{ ddclient_config_dir }}"
 #  file:
 #    state: absent
 #    path: "{{ ddclient_config_dir }}"

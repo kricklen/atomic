@@ -1,8 +1,8 @@
 ---
-samba_user_name:  "markus"
-samba_user_id:    1000
+samba_user_name: "markus"
+samba_user_id: 1000
 samba_group_name: "users"
-samba_group_id:   100
+samba_group_id: 100
 
 samba_volume_list:
   - "samba_etc:/etc:Z"

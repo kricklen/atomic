@@ -1,27 +1,25 @@
-# Remove proxy-nginx container
-- name: Stop and Remove Container - proxy-nginx
-  docker_container:
+- name: Stop and Remove Container - reverse-proxy
+  community.docker.docker_container:
     state: absent
-    name: proxy-nginx
-    image: nginx:alpine
-    keep_volumes: "no"
+    name: reverse-proxy
 
-# Remove proxy-certbot
-- name: Stop and Remove Container - proxy-certbot
-  docker_container:
+# - name: Remove Docker Network - reverse-proxy-public
+#   community.docker.docker_network:
+#     state: absent
+#     name: reverse-proxy-public
+
+- name: Stop and Remove Container - certbot
+  community.docker.docker_container:
     state: absent
-    name: proxy-certbot
-    image: certbot:certbot
-    keep_volumes: "no"
+    name: certbot
 
-# Remove proxy network
-- name: Remove Docker Network - proxy_net
-  docker_network:
-    state: absent
-    name: proxy_net
+# - name: Remove Docker Network - certbot-public
+#   community.docker.docker_network:
+#     state: absent
+#     name: certbot-public
 
-## Delete directories
-#- name: Delete Directories - proxy
+# # Delete directories
+# - name: Delete Directories - proxy
 #  file:
 #    state: absent
 #    path: "{{ item }}/"

@@ -1,5 +1,5 @@
 ---
-plex_user_name:  "plex"
-plex_user_id:    1054
+plex_user_name: "plex"
+plex_user_id: 1054
 plex_group_name: "users"
-plex_group_id:   100
+plex_group_id: 100

@@ -1,14 +1,14 @@
 ---
-nextcloud_user_name:  "nextcloud"
-nextcloud_user_id:    1052
+nextcloud_user_name: "nextcloud"
+nextcloud_user_id: 1052
 nextcloud_group_name: "users"
-nextcloud_group_id:   100
+nextcloud_group_id: 100
 
 nextcloud_fpm_name: "nextcloud-fpm"
 
-nextcloud_db_dir:     "/mnt/nextcloud/db"
-nextcloud_www_dir:    "/mnt/nextcloud/www"
-nextcloud_nginx_dir:  "/mnt/nextcloud/nginx"
+nextcloud_db_dir: "/mnt/nextcloud/db"
+nextcloud_www_dir: "/mnt/nextcloud/www"
+nextcloud_nginx_dir: "/mnt/nextcloud/nginx"
 
 nextcloud_volume_list:
   - "{{ nextcloud_www_dir }}:/var/www/html:z"

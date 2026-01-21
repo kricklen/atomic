@@ -1,18 +1,18 @@
 # Tor Relay account
-tor_user_name: tor
-tor_group_name: users
-#tor_user_id: 1055
-tor_user_id: 19001
-#tor_group_id: 100
-tor_group_id: 19001
+tor_relay_user_name: tor
+tor_relay_group_name: users
+# tor_relay_user_id: 1055
+tor_relay_user_id: 19001
+# tor_relay_group_id: 100
+tor_relay_group_id: 19001
 
-tor_config_dir: /mnt/tor
-tor_data_dir:   /mnt/tor/data
+tor_relay_config_dir: /mnt/tor
+tor_relay_data_dir: /mnt/tor/data
 
 # Settings for torrc
-tor_or_port:  22223
-tor_dir_port: 22233
-tor_nickname: no-nickname
-tor_contact:  no-contact
-tor_bw_rate:  "4 MByte"
-tor_bw_burst: "7 MByte"
+tor_relay_or_port: 22223
+tor_relay_dir_port: 22233
+tor_relay_nickname: no-nickname
+tor_relay_contact: no-contact
+tor_relay_bw_rate: "4 MByte"
+tor_relay_bw_burst: "7 MByte"

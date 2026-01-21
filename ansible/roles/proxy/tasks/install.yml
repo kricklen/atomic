@@ -56,7 +56,7 @@
 # # Create self signed certificate for local access
 # - name: Create Certificate - proxy self signed (local)
 #   command: >
-#     openssl req -x509 -nodes -newkey rsa:4096 -days 9999 
+#     openssl req -x509 -nodes -newkey rsa:4096 -days 9999
 #     -keyout '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/privkey.pem'
 #     -out '{{ proxy_certbot_conf_path }}/live/{{ server_name }}/fullchain.pem'
 #     -subj '/CN=localhost'
@@ -70,16 +70,17 @@
 #     -subj '/CN=localhost'
 #   loop: "{{ domains | dict2items }}"
 
-# # Create proxy network
-# - name: Create Docker Network - proxy_net
-#   docker_network:
-#     name: proxy_net
+# # Create reverse-proxy network
+# - name: Create Docker Network - reverse-proxy-public
+#   community.docker.docker_network:
+#     name: reverse-proxy-public
+#     enable_ipv6: false
 
-# Start proxy-nginx docker container
-- name: Start Container - proxy-nginx
-  docker_container:
-    name: proxy-nginx
-    hostname: proxy-nginx
+# Start reverse-proxy docker container
+- name: Start Container - reverse-proxy
+  community.docker.docker_container:
+    name: reverse-proxy
+    hostname: reverse-proxy
     image: kricklen/proxy_nginx:latest
     restart_policy: unless-stopped
     volumes:
@@ -90,7 +91,9 @@
       - "80:80"
       - "443:443"
     networks:
-      - name: proxy_net
+      - name: reverse-proxy-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"
 
 # # From https://stackoverflow.com/questions/32878795/run-command-inside-of-docker-container-using-ansible
 # # Add nginx docker to inventory
@@ -140,11 +143,17 @@
 #   delegate_to: proxy-nginx
 #   raw: nginx -s reload
 
+# # Create certbot network
+# - name: Create Docker Network - certbot-public
+#   community.docker.docker_network:
+#     name: certbot-public
+#     enable_ipv6: false
+
 # Start certbot container
-- name: Start Container - proxy-certbot
-  docker_container:
-    name: proxy-certbot
-    hostname: proxy-certbot
+- name: Start Container - certbot
+  community.docker.docker_container:
+    name: certbot
+    hostname: certbot
     image: kricklen/proxy_certbot:latest
     restart_policy: unless-stopped
     volumes:
@@ -152,4 +161,6 @@
       - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
       - "{{ proxy_certbot_lib_path }}:/var/lib/letsencrypt:Z"
     networks:
-      - name: proxy_net
+      - name: certbot-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

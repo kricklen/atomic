@@ -1,14 +1,16 @@
 # Delete User for tor
 - name: Delete User - tor
-  user:
+  ansible.builtin.user:
     state: absent
-    name: "{{ tor_user_name }}"
-    comment: User for tor_relay docker
-    system: "yes"
-    create_home: "no"
+    name: "{{ tor_relay_user_name }}"
 
 # Remove the tor_relay docker container with prepared config file
 - name: Stop and Remove Container - tor_relay
-  docker_container:
+  community.docker.docker_container:
     state: absent
     name: tor_relay
+
+# - name: Remove Docker Network - tor-public
+#   community.docker.docker_network:
+#     state: absent
+#     name: tor-public

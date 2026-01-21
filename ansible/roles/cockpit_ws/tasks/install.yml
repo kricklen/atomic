@@ -1,13 +1,13 @@
 # Start the cockpit docker container
 - name: Start Docker Container - cockpit_ws
-  docker_container:
+  community.docker.docker_container:
     state: started
     name: cockpit_ws
     hostname: cockpit_ws
     image: quay.io/cockpit/ws:latest
     restart_policy: unless-stopped
     pid_mode: host
-    privileged: yes
+    privileged: true
     volumes:
       - /:/host
     command:

@@ -1,54 +1,50 @@
 # Create User for web
 - name: Create User - web
-  user:
+  ansible.builtin.user:
     state: present
     name: "{{ web_user_name }}"
     comment: User for web docker
-    system: "no"
-    create_home: "no"
-    non_unique: yes
+    system: false
+    create_home: false
+    # non_unique: yes
     uid: "{{ web_user_id }}"
     group: "{{ web_group_name }}"
 
-# Create directories
-- name: Create Directories - web
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ web_user_name }}"
-    group: "{{ web_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-    recurse: yes
-  loop:
-    - "{{ web_www_dir }}"
-    - "{{ web_nginx_dir }}"
+# # Create directories
+# - name: Create Directories - web
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ web_user_name }}"
+#     group: "{{ web_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
+#     recurse: yes
+#   loop:
+#     - "{{ web_www_dir }}"
+#     - "{{ web_nginx_dir }}"
 
-# Copy nginx.conf
-- name: Copy Template - nginx.conf.template -> nginx.conf
-  template:
-    src: nginx.conf.template
-    dest: "{{ web_nginx_dir }}/nginx.conf"
-    owner: "{{ web_user_name }}"
-    group: "{{ web_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
+# # Copy nginx.conf
+# - name: Copy Template - nginx.conf.template -> nginx.conf
+#   template:
+#     src: nginx.conf.template
+#     dest: "{{ web_nginx_dir }}/nginx.conf"
+#     owner: "{{ web_user_name }}"
+#     group: "{{ web_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
 
-# Create proxy network
-- name: Create Docker Network - proxy_net
-  docker_network:
-    name: proxy_net
-
-# Create web_net network
-- name: Create Docker Network - web_net
-  docker_network:
-    name: web_net
+# # Create web network
+# - name: Create Docker Network - web-private
+#   community.docker.docker_network:
+#     name: web-private
+#     enable_ipv6: false
 
 # Start web-fpm docker container
 - name: Start Container - web-fpm
-  docker_container:
+  community.docker.docker_container:
     name: web-fpm
     hostname: web-fpm
     image: kricklen/web_fpm:latest
@@ -57,13 +53,14 @@
     restart_policy: unless-stopped
     volumes:
       - "{{ web_www_dir }}:/var/www/html:z"
-    purge_networks: yes
     networks:
-      - name: web_net
+      - name: web-private
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"
 
 # Start web-nginx (nginx) to serve static html content
 - name: Start Container - web-nginx
-  docker_container:
+  community.docker.docker_container:
     name: web-nginx
     hostname: web-nginx
     image: kricklen/web_nginx:latest
@@ -73,7 +70,8 @@
     volumes:
       - "{{ web_www_dir }}:/var/www/html:z,ro"
       - "{{ web_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:z,ro"
-    purge_networks: yes
     networks:
-      - name: proxy_net
-      - name: web_net
+      - name: reverse-proxy-public
+      - name: web-private
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

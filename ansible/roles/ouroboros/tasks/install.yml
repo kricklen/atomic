@@ -1,6 +1,12 @@
+# # Create network
+# - name: Create Docker Network - ouroboros-public
+#   community.docker.docker_network:
+#     name: ouroboros-public
+#     enable_ipv6: false
+
 # Start the ouroboros docker container
 - name: Start Docker Container - ouroboros
-  docker_container:
+  community.docker.docker_container:
     state: started
     name: ouroboros
     hostname: ouroboros
@@ -15,3 +21,7 @@
       SELF_UPDATE: true
       IGNORE: "mongo influxdb postgres mariadb"
       TZ: "Europe/Berlin"
+    networks:
+      - name: ouroboros-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

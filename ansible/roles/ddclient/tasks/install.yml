@@ -1,59 +1,57 @@
 # Create User for ddclient
 - name: Create User - ddclient
-  user:
+  ansible.builtin.user:
     name: "{{ ddclient_user_name }}"
     comment: User for ddclient docker
-    system: "yes"
-    create_home: "no"
+    system: true
+    create_home: false
     uid: "{{ ddclient_user_id }}"
-    group: "{{ ddclient_group_name}}"
-
-# Create config directory
-- name: "Create Directory - {{ ddclient_config_dir }}"
-  file:
-    path: "{{ ddclient_config_dir }}"
-    state: directory
-    owner: "{{ ddclient_user_name }}"
     group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
 
-# Copy Template
-- name: "Copy Template - ddclient.conf"
-  template:
-    src: ddclient.conf.template
-    dest: "{{ ddclient_config_dir }}/ddclient.conf"
-    mode: 0600
-    owner: "{{ ddclient_user_name }}"
-    group: "{{ ddclient_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
+# # Create config directory
+# - name: "Create Directory - {{ ddclient_config_dir }}"
+#   file:
+#     path: "{{ ddclient_config_dir }}"
+#     state: directory
+#     owner: "{{ ddclient_user_name }}"
+#     group: "{{ ddclient_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
 
-# Create network for ddclient (isolation)
-- name: Create Docker Network - ddclient_net
-  docker_network:
-    name: ddclient_net
+# # Copy Template
+# - name: "Copy Template - ddclient.conf"
+#   template:
+#     src: ddclient.conf.template
+#     dest: "{{ ddclient_config_dir }}/ddclient.conf"
+#     mode: 0600
+#     owner: "{{ ddclient_user_name }}"
+#     group: "{{ ddclient_group_name }}"
+#     seuser: "{{ se_file_user }}"
+#     serole: "{{ se_file_role }}"
+#     setype: "{{ se_file_type }}"
+
+# # Create network for ddclient
+# - name: Create Docker Network - ddclient
+#   community.docker.docker_network:
+#     name: ddclient-public
+#     enable_ipv6: false
 
 # Start the ddclient docker container with prepared config file
 - name: Start Container - ddclient
-  docker_container:
+  community.docker.docker_container:
     name: ddclient
     hostname: ddclient
-#    image: local/ddclient:latest
     image: linuxserver/ddclient:latest
-#    user: "{{ ddclient_user_id }}:{{ ddclient_group_id }}"
     state: started
     restart_policy: unless-stopped
     volumes:
-#      - "{{ ddclient_config_dir }}/ddclient.conf:/etc/ddclient.conf:Z"
       - "{{ ddclient_config_dir }}:/config:Z"
     env:
-        PGID: "{{ ddclient_group_id | quote }}"
-        PUID: "{{ ddclient_user_id | quote }}"
-        TZ: "Europe/Berlin"
-    purge_networks: yes
-    networks_cli_compatible: no
+      PGID: "{{ ddclient_group_id | quote }}"
+      PUID: "{{ ddclient_user_id | quote }}"
+      TZ: "Europe/Berlin"
     networks:
-      - name: ddclient_net
+      - name: ddclient-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

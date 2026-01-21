@@ -1,0 +1,49 @@
+- name: Create Docker Network - ddclient
+  community.docker.docker_network:
+    state: absent
+    name: ddclient-public
+
+- name: Create Docker Network - nextcloud-public
+  community.docker.docker_network:
+    state: absent
+    name: nextcloud-public
+
+- name: Create Docker Network - nextcloud-private
+  community.docker.docker_network:
+    state: absent
+    name: nextcloud-private
+
+- name: Create Docker Network - ouroboros-public
+  community.docker.docker_network:
+    state: absent
+    name: ouroboros-public
+
+- name: Create Docker Network - plex-public
+  community.docker.docker_network:
+    state: absent
+    name: plex-public
+
+- name: Create Docker Network - reverse-proxy-public
+  community.docker.docker_network:
+    state: absent
+    name: reverse-proxy-public
+
+- name: Create Docker Network - certbot-public
+  community.docker.docker_network:
+    state: absent
+    name: certbot-public
+
+- name: Create Docker Network - samba-public
+  community.docker.docker_network:
+    state: absent
+    name: samba-public
+
+- name: Create Docker Network - tor-public
+  community.docker.docker_network:
+    state: absent
+    name: tor-public
+
+- name: Create Docker Network - web-private
+  community.docker.docker_network:
+    state: absent
+    name: web-private

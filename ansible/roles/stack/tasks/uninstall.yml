@@ -1,4 +1,0 @@
-- name: Remove home stack
-  docker_stack:
-    state: absent
-    name: Home Stack

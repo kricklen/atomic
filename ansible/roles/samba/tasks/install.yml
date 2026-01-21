@@ -1,41 +1,50 @@
 # Create User for samba
 - name: Create User - samba
-  user:
+  ansible.builtin.user:
     state: present
     name: "{{ samba_user_name }}"
     comment: User for samba docker
-    system: "no" 
-    create_home: "no"
-    non_unique: "yes"
+    system: false
+    create_home: false
+    # non_unique: "yes"
     uid: "{{ samba_user_id }}"
-    group: "{{ samba_group_name}}"
+    group: "{{ samba_group_name }}"
 
 # Create list of samba mounted volumes for system and extra shares
 - name: Set facts samba_shares
-  set_fact:
-    samba_volume_list: "{{ samba_volume_list + [ item.value + ':' + item.value + ':z' ] }}"
+  ansible.builtin.set_fact:
+    samba_volume_list: "{{ samba_volume_list + [item.value + ':' + item.value + ':z'] }}"
   loop: "{{ samba_shares | dict2items }}"
 
 # create list of commands for user creation and exposing shares
 - name: Set facts samba_command_list
-  set_fact:
-    samba_command_list: "{{ samba_command_list + [ '-s \"' + item.key + ';' + item.value + ';yes;no;no;' + samba_user_name + ';' + samba_user_name + '\"' ] }}"
+  ansible.builtin.set_fact:
+    samba_command_list: "{{ samba_command_list + ['-s \"' + item.key + ';' + item.value + ';yes;no;no;' + samba_user_name + ';' + samba_user_name + '\"'] }}"
   loop: "{{ samba_shares | dict2items }}"
+
+# - name: Create Docker Network - samba-public
+#   community.docker.docker_network:
+#     name: samba-public
+#     enable_ipv6: false
 
 # Start the samba docker container with prepared config file
 - name: Start Docker Container - samba
-  docker_container:
+  community.docker.docker_container:
     state: started
     name: samba
     hostname: samba
     image: dperson/samba:latest
     restart_policy: unless-stopped
+    command:
+      "{{ samba_command_list }}"
+    env:
+      TZ: "Europe/Berlin"
     volumes:
       "{{ samba_volume_list }}"
     ports:
       - 139:139
       - 445:445
-    env:
-      TZ: "Europe/Berlin"
-    command: 
-      "{{ samba_command_list }}"
+    networks:
+      - name: samba-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

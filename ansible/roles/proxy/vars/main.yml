@@ -1,7 +1,7 @@
 ---
-proxy_nginx_path:        "/mnt/proxy/nginx"
+proxy_nginx_path: "/mnt/proxy/nginx"
 proxy_certbot_conf_path: "/mnt/proxy/certbot/conf"
-proxy_certbot_lib_path:  "/mnt/proxy/certbot/lib"
-proxy_certbot_www_path:  "/mnt/proxy/certbot/www"
+proxy_certbot_lib_path: "/mnt/proxy/certbot/lib"
+proxy_certbot_www_path: "/mnt/proxy/certbot/www"
 
 proxy_rsa_keysize: 4096

@@ -1,0 +1,51 @@
+- name: Create Docker Network - ddclient
+  community.docker.docker_network:
+    name: ddclient-public
+    enable_ipv6: false
+
+- name: Create Docker Network - nextcloud-public
+  community.docker.docker_network:
+    name: nextcloud-public
+    enable_ipv6: false
+    internal: true
+
+- name: Create Docker Network - nextcloud-private
+  community.docker.docker_network:
+    name: nextcloud-private
+    enable_ipv6: false
+    internal: true
+
+- name: Create Docker Network - ouroboros-public
+  community.docker.docker_network:
+    name: ouroboros-public
+    enable_ipv6: false
+
+- name: Create Docker Network - plex-public
+  community.docker.docker_network:
+    name: plex-public
+    enable_ipv6: false
+
+- name: Create Docker Network - reverse-proxy-public
+  community.docker.docker_network:
+    name: reverse-proxy-public
+    enable_ipv6: false
+
+- name: Create Docker Network - certbot-public
+  community.docker.docker_network:
+    name: certbot-public
+    enable_ipv6: false
+
+- name: Create Docker Network - samba-public
+  community.docker.docker_network:
+    name: samba-public
+    enable_ipv6: false
+
+- name: Create Docker Network - tor-public
+  community.docker.docker_network:
+    name: tor-public
+    enable_ipv6: false
+
+- name: Create Docker Network - web-private
+  community.docker.docker_network:
+    name: web-private
+    enable_ipv6: false

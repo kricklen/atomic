@@ -1,17 +1,22 @@
 - name: Create User - plex
-  user:
+  ansible.builtin.user:
     state: present
     name: "{{ plex_user_name }}"
     comment: User for plex docker
-    system: "no" 
-    create_home: "no"
-    non_unique: "yes"
+    system: false
+    create_home: false
+    # non_unique: "yes"
     uid: "{{ plex_user_id }}"
-    group: "{{ plex_group_name}}"
+    group: "{{ plex_group_name }}"
+
+# - name: Create Docker Network - plex-public
+#   community.docker.docker_network:
+#     name: plex-public
+#     enable_ipv6: false
 
 # Start the plex docker container with prepared config file
 - name: Start Docker Container - plex
-  docker_container:
+  community.docker.docker_container:
     state: started
     name: plex
     hostname: plex
@@ -22,6 +27,12 @@
       - "/mnt/plex/config:/config:Z"
       - "/mnt/plex/transcode:/transcode:Z"
       - "/mnt/downloads:/downloads:ro,z"
+    env:
+      PLEX_UID: "{{ plex_user_id | string }}"
+      PLEX_GID: "{{ plex_group_id | string }}"
+      TZ: "Europe/Berlin"
+      ADVERTISE_IP: "http://{{ server_ip }}:32400"
+      ALLOWED_NETWORKS: "{{ server_ip_range }},172.16.0.0/16"
     ports:
       - 32400:32400/tcp
       - 3005:3005/tcp
@@ -32,9 +43,7 @@
       - 32412:32412/udp
       - 32413:32413/udp
       - 32414:32414/udp
-    env:
-      PLEX_UID: "{{ plex_user_id | string }}"
-      PLEX_GID: "{{ plex_group_id | string }}"
-      TZ: "Europe/Berlin"
-      ADVERTISE_IP: "http://{{ server_ip }}:32400"
-      ALLOWED_NETWORKS: "{{ server_ip_range }},172.16.0.0/16"
+    networks:
+      - name: plex-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"
