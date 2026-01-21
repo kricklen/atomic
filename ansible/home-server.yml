@@ -30,4 +30,5 @@
 #    - plex
 #    - tor_relay
 # Doesn't work for local images?
+    - watchtower
 #    - ouroboros

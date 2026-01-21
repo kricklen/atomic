@@ -15,11 +15,6 @@
     enable_ipv6: false
     internal: true
 
-- name: Create Docker Network - ouroboros-public
-  community.docker.docker_network:
-    name: ouroboros-public
-    enable_ipv6: false
-
 - name: Create Docker Network - plex-public
   community.docker.docker_network:
     name: plex-public
@@ -43,6 +38,11 @@
 - name: Create Docker Network - tor-public
   community.docker.docker_network:
     name: tor-public
+    enable_ipv6: false
+
+- name: Create Docker Network - watchtower-public
+  community.docker.docker_network:
+    name: watchtower-public
     enable_ipv6: false
 
 - name: Create Docker Network - web-private

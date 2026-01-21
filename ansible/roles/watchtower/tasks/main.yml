@@ -1,0 +1,8 @@
+# Include tasks for creating watchtower
+- name: Install watchtower
+  ansible.builtin.include_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall watchtower
+  ansible.builtin.include_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"

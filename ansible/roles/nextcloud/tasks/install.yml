@@ -63,8 +63,10 @@
     image: kricklen/nextcloud_db:latest
     state: started
     restart_policy: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: false
     env:
-      "MYSQL_RANDOM_ROOT_PASSWORD": "yes" nonono
+      "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
     volumes:
       - "{{ nextcloud_db_dir }}:/var/lib/mysql:Z"
     networks:

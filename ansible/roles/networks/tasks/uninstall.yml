@@ -13,11 +13,6 @@
     state: absent
     name: nextcloud-private
 
-- name: Create Docker Network - ouroboros-public
-  community.docker.docker_network:
-    state: absent
-    name: ouroboros-public
-
 - name: Create Docker Network - plex-public
   community.docker.docker_network:
     state: absent
@@ -42,6 +37,11 @@
   community.docker.docker_network:
     state: absent
     name: tor-public
+
+- name: Create Docker Network - watchtower-public
+  community.docker.docker_network:
+    state: absent
+    name: watchtower-public
 
 - name: Create Docker Network - web-private
   community.docker.docker_network:
