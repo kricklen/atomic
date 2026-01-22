@@ -51,7 +51,8 @@
     restart_policy: unless-stopped
     user: "{{ tor_relay_user_id }}:{{ tor_relay_group_name }}"
     volumes:
-      - "{{ tor_relay_config_dir }}:/etc/tor:Z"
+      #- "{{ tor_relay_config_dir }}:/etc/tor:Z"
+      - "{{ tor_relay_config_dir }}:/config:Z"
       - "{{ tor_relay_data_dir }}:/var/lib/tor/data:Z"
       - "/mnt/tor/run:/var/run/tor:Z"
     ports:
