@@ -93,6 +93,22 @@
 # #     'timeout'  => 1.5,      # Not required
 # ],
 
+# Create unix socket for redis:
+# $ cd /var/run
+# $ mkdir redis
+# $ chcon --reference docker redis
+
+# Create redis.conf file, all values:
+# https://raw.githubusercontent.com/redis/redis/8.4/redis.conf
+- name: Create redis.conf
+  ansible.builtin.copy:
+    dest: /mnt/redis/redis.conf
+    content: |
+      # This is the location of the sock file inside the redis docker container.
+      unixsocket /run/redis.sock
+      unixsocketperm 700
+    mode: "0700"
+
 # Start nextcloud-redis docker container
 - name: Start Container - nextcloud-redis
   community.docker.docker_container:
@@ -101,6 +117,12 @@
     image: redis:alpine
     state: started
     restart_policy: unless-stopped
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - /mnt/redis:/usr/local/etc/redis
+      - /var/run/redis/redis.sock:/run/redis.sock
     networks:
       - name: nextcloud-private
     comparisons:
