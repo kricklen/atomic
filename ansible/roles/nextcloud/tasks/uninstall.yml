@@ -13,6 +13,11 @@
     state: absent
     name: nextcloud-db
 
+- name: "Stop and Remove Container - nextcloud-redis"
+  community.docker.docker_container:
+    state: absent
+    name: nextcloud-redis
+
 # - name: Remove Docker Network - nextcloud-public
 #   community.docker.docker_network:
 #     state: absent

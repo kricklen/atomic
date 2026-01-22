@@ -74,6 +74,38 @@
     comparisons:
       networks: strict # This removes the container from the default network, which should be "bridge"
 
+# Configure caching in nextcloud:
+# https://docs.nextcloud.com/server/19/admin_manual/configuration_server/caching_configuration.html
+# In config.php:
+# 'memcache.local' => '\OC\Memcache\APCu',
+# 'memcache.distributed' => '\OC\Memcache\Redis',
+# 'memcache.locking' => '\OC\Memcache\Redis',
+# 'redis' => [
+#      'host' => 'nextcloud-redis',
+#      'port' => 6379,
+# ],
+# Or use socket if possible:
+# 'redis' => [
+#      'host'     => '/run/redis/redis-server.sock',
+#      'port'     => 0,
+# #     'dbindex'  => 0,        # Not required
+# #     'password' => 'secret', # Not required
+# #     'timeout'  => 1.5,      # Not required
+# ],
+
+# Start nextcloud-redis docker container
+- name: Start Container - nextcloud-redis
+  community.docker.docker_container:
+    name: nextcloud-redis
+    hostname: nextcloud-redis
+    image: redis:alpine
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: nextcloud-private
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"
+
 # Start nextcloud-fpm docker container
 - name: "Start Container - {{ nextcloud_fpm_name }}"
   community.docker.docker_container:
