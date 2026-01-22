@@ -82,6 +82,7 @@
     name: reverse-proxy
     hostname: reverse-proxy
     image: kricklen/proxy_nginx:latest
+    pull: true
     restart_policy: unless-stopped
     volumes:
       - "{{ proxy_nginx_path }}:/etc/nginx/conf.d:Z"
@@ -155,6 +156,7 @@
     name: certbot
     hostname: certbot
     image: kricklen/proxy_certbot:latest
+    pull: true
     restart_policy: unless-stopped
     volumes:
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
