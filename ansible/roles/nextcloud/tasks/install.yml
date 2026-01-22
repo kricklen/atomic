@@ -49,6 +49,7 @@
     name: nextcloud-db
     hostname: nextcloud-db
     image: kricklen/nextcloud_db:latest
+    pull: true
     state: started
     restart_policy: unless-stopped
     labels:
@@ -120,6 +121,7 @@
 - name: Create /var/run/redis
   ansible.builtin.file:
     path: /var/run/redis
+    recurse: true
     owner: "{{ nextcloud_user_name }}"
     group: "{{ nextcloud_group_name }}"
     seuser: "{{ se_file_user }}"
@@ -132,6 +134,7 @@
     name: nextcloud-redis
     hostname: nextcloud-redis
     image: redis:alpine
+    pull: true
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
@@ -152,6 +155,7 @@
     name: "{{ nextcloud_fpm_name }}"
     hostname: "{{ nextcloud_fpm_name }}"
     image: kricklen/nextcloud_fpm:latest
+    pull: true
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
@@ -169,6 +173,7 @@
     name: nextcloud-web
     hostname: nextcloud-web
     image: kricklen/nextcloud_nginx:latest
+    pull: true
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
