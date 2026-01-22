@@ -18,25 +18,10 @@
     state: absent
     name: nextcloud-redis
 
-# - name: Remove Docker Network - nextcloud-public
-#   community.docker.docker_network:
-#     state: absent
-#     name: nextcloud-public
-
-# - name: Remove Docker Network - nextcloud-private
-#   community.docker.docker_network:
-#     state: absent
-#     name: nextcloud-private
-
 - name: Delete User - nextcloud
   ansible.builtin.user:
     state: absent
     name: "{{ nextcloud_user_name }}"
-
-# - name: Delete User - redis
-#   ansible.builtin.user:
-#     state: absent
-#     name: redis
 
 # # Remove directories
 # - name: Remove Directories - nextcloud

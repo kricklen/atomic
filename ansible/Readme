@@ -1,3 +1,14 @@
 Copy with flags:
 rsync -aHAX --xattrs /source/ /target/
 
+ToDo:
+- Restore setup-vars.yaml
+- Hard code nextcloud shares and volume mounts
+- Create nextcloud-redis
+- update nextcloud nginx.config with
+  worker_processes  auto;
+  worker_rlimit_nofile  65535;
+  events {
+    multi_accept on;
+  }
+- check gzip comression of nginx in proxy and nextcloud, only compress once

@@ -10,17 +10,6 @@
     uid: "{{ nextcloud_user_id }}"
     group: "{{ nextcloud_group_name }}"
 
-# - name: Create User - redis
-#   ansible.builtin.user:
-#     state: present
-#     name: redis
-#     comment: User for redis docker
-#     system: false
-#     create_home: false
-#     # non_unique: yes
-#     uid: 1053
-#     group: 100
-
 # # Create directories
 # - name: Create Directories - nextcloud
 #   file:
@@ -47,18 +36,6 @@
 #     seuser: "{{ se_file_user }}"
 #     serole: "{{ se_file_role }}"
 #     setype: "{{ se_file_type }}"
-
-# # Create proxy network
-# - name: Create Docker Network - nextcloud-public
-#   community.docker.docker_network:
-#     name: nextcloud-public
-#     enable_ipv6: false
-
-# # Create nextcloud_net network
-# - name: Create Docker Network - nextcloud-private
-#   community.docker.docker_network:
-#     name: nextcloud-private
-#     enable_ipv6: false
 
 # # Create list of mounted volumes for system and external dirs
 # - name: Set facts nextcloud_shares
@@ -110,9 +87,9 @@
 # $ chcon --reference docker redis
 
 # Create folders for redis
-- name: Create redis dirs in /mnt/redis
+- name: Create /mnt/redis/conf
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: /mnt/redis/conf
     state: directory
     recurse: true
     owner: "{{ nextcloud_user_name }}"
@@ -120,8 +97,6 @@
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
-  loop:
-    - /mnt/redis/conf
 
 # Create redis.conf file, all values:
 # https://raw.githubusercontent.com/redis/redis/8.4/redis.conf
