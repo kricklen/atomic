@@ -10,16 +10,16 @@
     uid: "{{ nextcloud_user_id }}"
     group: "{{ nextcloud_group_name }}"
 
-- name: Create User - redis
-  ansible.builtin.user:
-    state: present
-    name: redis
-    comment: User for redis docker
-    system: false
-    create_home: false
-    # non_unique: yes
-    uid: 1053
-    group: 100
+# - name: Create User - redis
+#   ansible.builtin.user:
+#     state: present
+#     name: redis
+#     comment: User for redis docker
+#     system: false
+#     create_home: false
+#     # non_unique: yes
+#     uid: 1053
+#     group: 100
 
 # # Create directories
 # - name: Create Directories - nextcloud
@@ -119,8 +119,8 @@
       unixsocket /run/redis/redis.sock
       unixsocketperm 700
     mode: "0700"
-    owner: redis
-    group: "100"
+    owner: "{{ nextcloud_user_name }}"
+    group: "{{ nextcloud_group_name }}"
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
@@ -129,8 +129,8 @@
 - name: Create /var/run/redis
   ansible.builtin.file:
     path: /var/run/redis
-    owner: redis
-    group: 100
+    owner: "{{ nextcloud_user_name }}"
+    group: "{{ nextcloud_group_name }}"
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
@@ -141,7 +141,7 @@
     name: nextcloud-redis
     hostname: nextcloud-redis
     image: redis:alpine
-    user: "1053:100"
+    user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
     command:

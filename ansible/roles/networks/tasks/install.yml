@@ -7,7 +7,9 @@
   community.docker.docker_network:
     name: nextcloud-public
     enable_ipv6: false
-    internal: true
+    # nextcloud-fpm is fetching data from www.nextcloud.com etc, so it
+    # needs access to the internet.
+    # internal: true
 
 - name: Create Docker Network - nextcloud-private
   community.docker.docker_network:
