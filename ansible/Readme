@@ -5,7 +5,8 @@ ToDo:
 - Restore setup-vars.yaml
 - Hard code nextcloud shares and volume mounts
 - Create nextcloud-redis
-- update nextcloud nginx.config with
+- Add trusted_proxies: https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/reverse_proxy_configuration.html
+- update nextcloud nginx.config with:
   worker_processes  auto;
   worker_rlimit_nofile  65535;
   events {
