@@ -113,12 +113,22 @@
 # https://raw.githubusercontent.com/redis/redis/8.4/redis.conf
 - name: Create redis.conf
   ansible.builtin.copy:
-    dest: /mnt/redis/redis.conf
+    dest: /mnt/redis/conf/redis.conf
     content: |
       # This is actually the location of the sock file inside the redis docker container.
       unixsocket /run/redis/redis.sock
       unixsocketperm 700
     mode: "0700"
+    owner: "{{ nextcloud_user_name }}"
+    group: "{{ nextcloud_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+# Create folder for redis data
+- name: Create /mnt/redis/data
+  ansible.builtin.file:
+    path: /mnt/redis/data
     owner: "{{ nextcloud_user_name }}"
     group: "{{ nextcloud_group_name }}"
     seuser: "{{ se_file_user }}"
@@ -148,7 +158,8 @@
       - redis-server
       - /usr/local/etc/redis/redis.conf
     volumes:
-      - "/mnt/redis:/usr/local/etc/redis:z"
+      - "/mnt/redis/conf:/usr/local/etc/redis:z"
+      - "/mnt/redis/data:/data:z"
       - "/var/run/redis:/run/redis:z"
     networks:
       - name: nextcloud-private
