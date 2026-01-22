@@ -9,11 +9,6 @@
     uid: "{{ plex_user_id }}"
     group: "{{ plex_group_name }}"
 
-# - name: Create Docker Network - plex-public
-#   community.docker.docker_network:
-#     name: plex-public
-#     enable_ipv6: false
-
 # Start the plex docker container with prepared config file
 - name: Start Docker Container - plex
   community.docker.docker_container:
@@ -22,6 +17,7 @@
     hostname: plex
 #    user: "{{ plex_user_id }}:{{ plex_user_id }}"
     image: plexinc/pms-docker:latest
+    pull: true
     restart_policy: unless-stopped
     volumes:
       - "/mnt/plex/config:/config:Z"
