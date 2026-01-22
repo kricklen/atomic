@@ -10,6 +10,17 @@
     uid: "{{ nextcloud_user_id }}"
     group: "{{ nextcloud_group_name }}"
 
+- name: Create User - redis
+  ansible.builtin.user:
+    state: present
+    name: redis
+    comment: User for redis docker
+    system: false
+    create_home: false
+    # non_unique: yes
+    uid: 999
+    group: 100
+
 # # Create directories
 # - name: Create Directories - nextcloud
 #   file:
@@ -104,10 +115,15 @@
   ansible.builtin.copy:
     dest: /mnt/redis/redis.conf
     content: |
-      # This is the location of the sock file inside the redis docker container.
-      unixsocket /run/redis.sock
+      # This is actually the location of the sock file inside the redis docker container.
+      unixsocket /run/redis/redis.sock
       unixsocketperm 700
     mode: "0700"
+    owner: "999"
+    group: "100"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
 
 # Start nextcloud-redis docker container
 - name: Start Container - nextcloud-redis
@@ -115,14 +131,15 @@
     name: nextcloud-redis
     hostname: nextcloud-redis
     image: redis:alpine
+    user: "999:100"
     state: started
     restart_policy: unless-stopped
     command:
       - redis-server
       - /usr/local/etc/redis/redis.conf
     volumes:
-      - /mnt/redis:/usr/local/etc/redis
-      - /var/run/redis/redis.sock:/run/redis.sock
+      - "/mnt/redis:/usr/local/etc/redis:z"
+      - "/var/run/redis:/run/redis:z"
     networks:
       - name: nextcloud-private
     comparisons:
