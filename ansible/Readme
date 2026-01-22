@@ -13,3 +13,5 @@ ToDo:
 #     multi_accept on;
 #   }
 - check gzip comression of nginx in proxy and nextcloud, only compress once
+- enable cockpit 2fa login
+- enable samba windows login
