@@ -119,8 +119,18 @@
       unixsocket /run/redis/redis.sock
       unixsocketperm 700
     mode: "0700"
-    owner: "1053"
+    owner: redis
     group: "100"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+# Create folder for redis.sock
+- name: Create /var/run/redis
+  ansible.builtin.file:
+    path: /var/run/redis
+    owner: redis
+    group: 100
     seuser: "{{ se_file_user }}"
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
