@@ -48,6 +48,7 @@
     name: web-fpm
     hostname: web-fpm
     image: kricklen/web_fpm:latest
+    pull: true
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
@@ -64,6 +65,7 @@
     name: web-nginx
     hostname: web-nginx
     image: kricklen/web_nginx:latest
+    pull: true
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped

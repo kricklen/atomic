@@ -160,7 +160,10 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-      "{{ nextcloud_volume_list }}"
+      - "{{ nextcloud_www_dir }}:/var/www/html:z"
+      - "/var/run/redis:/run/redis:z"
+      - "/mnt/downloads:/mnt/downloads:z"
+      # "{{ nextcloud_volume_list }}"
     networks:
       - name: nextcloud-public
       - name: nextcloud-private
