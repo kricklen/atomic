@@ -109,6 +109,19 @@
 # $ mkdir redis
 # $ chcon --reference docker redis
 
+# Create folders for redis
+- name: Create redis dirs in /mnt/redis
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ nextcloud_user_name }}"
+    group: "{{ nextcloud_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+  loop:
+    - /mnt/redis/conf
+    - /mnt/redis/data
+
 # Create redis.conf file, all values:
 # https://raw.githubusercontent.com/redis/redis/8.4/redis.conf
 - name: Create redis.conf
@@ -119,16 +132,6 @@
       unixsocket /run/redis/redis.sock
       unixsocketperm 700
     mode: "0700"
-    owner: "{{ nextcloud_user_name }}"
-    group: "{{ nextcloud_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
-
-# Create folder for redis data
-- name: Create /mnt/redis/data
-  ansible.builtin.file:
-    path: /mnt/redis/data
     owner: "{{ nextcloud_user_name }}"
     group: "{{ nextcloud_group_name }}"
     seuser: "{{ se_file_user }}"
