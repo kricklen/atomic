@@ -33,6 +33,11 @@
     state: absent
     name: "{{ nextcloud_user_name }}"
 
+- name: Delete User - redis
+  ansible.builtin.user:
+    state: absent
+    name: redis
+
 # # Remove directories
 # - name: Remove Directories - nextcloud
 #   file:
