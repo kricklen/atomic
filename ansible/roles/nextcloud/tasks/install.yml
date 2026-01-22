@@ -85,7 +85,6 @@
     restart_policy: unless-stopped
     volumes:
       "{{ nextcloud_volume_list }}"
-    purge_networks: yes
     networks:
       - name: nextcloud-public
       - name: nextcloud-private
