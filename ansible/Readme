@@ -15,3 +15,57 @@ ToDo:
 - check gzip comression of nginx in proxy and nextcloud, only compress once
 - enable cockpit 2fa login
 - enable samba windows login
+
+Add samba to fedora (all cmds with root):
+Install samba:
+- dnf install samba
+Create linux user with passwd:
+- useradd <user>
+- passwd <user>
+Create and enable samba user:
+- smbpasswd -a <user>
+- smbpasswd -e <user>
+Set fs permissions:
+- chown -R <user>:<user> /mnt/downloads
+- chmod -R 755 /mnt/downloads (sure?)
+Configure samba:
+- add to /etc/samba/smb.conf
+[downloads]
+   path = /mnt/downloads
+   browseable = yes
+   writable = yes
+   valid users = <user>
+   force user = <user>
+   force group = <user>
+   create mask = 0644
+   directory mask = 0755
+   # Use modern SMB protocol
+   smb encrypt = desired
+Configure firewall:
+- firewall-cmd --get-active-zones
+- firewall-cmd --permanent --zone=<fedora zone> --add-service=samba
+- firewall-cmd --reload
+Enable samba:
+- systemctl enable --now smb
+Test the samba config:
+- testparm
+
+Enable 2fa for cockpit:
+Use google-authenticator PAM library:
+https://packages.fedoraproject.org/pkgs/google-authenticator/google-authenticator/index.html
+https://github.com/google/google-authenticator-libpam/
+To display qr codes in console:
+https://packages.fedoraproject.org/pkgs/qrencode/qrencode/index.html
+Install packages:
+- dnf install google-authenticator qrencode
+Enroll 2fa:
+- sudo -u <user> google-authenticator
+Configure PAM for cockpit:
+- Add this to 'auth's in /etc/pam.d/cockpit. Make sure it is below password auth.
+  auth required pam_google_authenticator.so
+
+Enable 2fa for password ssh login:
+The google-authenticator must be set up.
+Edit PAM for sshd:
+- Add this line below password auth in /etc/pam.d/sshd:
+  auth required pam_google_authenticator.so
