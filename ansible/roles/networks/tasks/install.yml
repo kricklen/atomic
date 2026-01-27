@@ -32,11 +32,6 @@
     name: certbot-public
     enable_ipv6: false
 
-- name: Create Docker Network - samba-public
-  community.docker.docker_network:
-    name: samba-public
-    enable_ipv6: false
-
 - name: Create Docker Network - tor-public
   community.docker.docker_network:
     name: tor-public

@@ -28,11 +28,6 @@
     state: absent
     name: certbot-public
 
-- name: Create Docker Network - samba-public
-  community.docker.docker_network:
-    state: absent
-    name: samba-public
-
 - name: Create Docker Network - tor-public
   community.docker.docker_network:
     state: absent
