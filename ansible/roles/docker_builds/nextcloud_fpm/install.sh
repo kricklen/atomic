@@ -3,15 +3,9 @@ set -e
 
 export occ_cmd='/var/www/html/occ'
 
-# Create link for nextcloud log file to write messages to stdout
-echo "Linking nc_docker.log to stdout"
-ln -s /dev/stdout /var/www/nc_docker.log
-chown www-data:www-data /var/www/nc_docker.log
-
 # Configure nextcloud
-$occ_cmd maintenance:install --admin-user admin --admin-pass admin
-echo "Setting log file to c_docker.log"
-$occ_cmd log:file --rotate-size 0 --file /var/www/nc_docker.log
+echo "Setting log file to php://stdout"
+$occ_cmd log:file --rotate-size 0 --file php://stdout
 echo "Installing calendar app"
 $occ_cmd app:install calendar
 echo "Installing contacts app"
