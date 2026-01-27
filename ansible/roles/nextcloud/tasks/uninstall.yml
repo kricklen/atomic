@@ -1,3 +1,19 @@
+# - name: Remove File - nextcloud-cron.timer
+#   ansible.builtin.file:
+#     path: /etc/systemd/system/nextcloud-cron.timer
+#     state: absent
+
+# - name: Remove File - nextcloud-cron.service
+#   ansible.builtin.file:
+#     path: /etc/systemd/system/nextcloud-cron.service
+#     state: absent
+
+- name: Disable Systemd Unit - nextcloud-cron.timer
+  ansible.builtin.systemd_service:
+    name: nextcloud-cron.timer
+    daemon_reload: true
+    state: stopped
+
 - name: Stop and Remove Container - nextcloud-web
   community.docker.docker_container:
     state: absent
