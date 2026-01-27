@@ -1,1 +1,1 @@
-FROM docker.io/mariadb:10.8.2
+FROM docker.io/mariadb:latest

@@ -56,6 +56,7 @@
       com.centurylinklabs.watchtower.enable: "false"
     env:
       "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
+      "MARIADB_AUTO_UPGRADE": "yes"
     volumes:
       - "{{ nextcloud_db_dir }}:/var/lib/mysql:Z"
     networks:
