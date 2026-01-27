@@ -188,3 +188,49 @@
       - name: reverse-proxy-public
     comparisons:
       networks: strict # This removes the container from the default network, which should be "bridge"
+
+# Create systemd timer and service for nextcloud cron job execution
+- name: Create Systemd Unit - nextcloud-cron.service
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/nextcloud-cron.service
+    content: |
+      [Unit]
+      Description=Run Nextcloud cron.php
+      Requires=docker.service
+      After=docker.service
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/bin/docker exec -u www-data {{ nextcloud_fpm_name }} php -f /var/www/html/cron.php
+    mode: "0644"
+    owner: root
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+- name: Create Systemd Unit - nextcloud-cron.timer
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/nextcloud-cron.timer
+    content: |
+      [Unit]
+      Description=Run Nextcloud cron every 5 minutes
+
+      [Timer]
+      OnBootSec=5min
+      OnUnitActiveSec=5min
+      Unit=nextcloud-cron.service
+
+      [Install]
+      WantedBy=timers.target
+    mode: "0644"
+    owner: root
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+- name: Enable Systemd Unit - nextcloud-cron.timer
+  ansible.builtin.systemd_service:
+    name: nextcloud-cron.timer
+    daemon_reload: true
+    enabled: true
+    state: started

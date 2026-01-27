@@ -12,11 +12,11 @@ ToDo:
 #   events {
 #     multi_accept on;
 #   }
-- check gzip comression of nginx in proxy and nextcloud, only compress once
-- enable cockpit 2fa login
-- enable samba windows login
+# - check gzip comression of nginx in proxy and nextcloud, only compress once
+# - enable cockpit 2fa login
+# - enable samba windows login
 
-Add samba to fedora (all cmds with root):
+Add samba to fedora (run all cmds with root):
 Install samba:
 - dnf install samba
 Create linux user with passwd:
@@ -25,20 +25,28 @@ Create linux user with passwd:
 Create and enable samba user:
 - smbpasswd -a <user>
 - smbpasswd -e <user>
-Set fs permissions:
-- chown -R <user>:<user> /mnt/downloads
-- chmod -R 755 /mnt/downloads (sure?)
+Set fs permissions for samba and nextcloud:
+- Add markus, nextcloud and plex to group with "usermod -aG users <user>"
+- Set owner of existing files with "chown -R <user>:users /mnt/downloads"
+- Set permissions on directories with "find /mnt/downloads -type d -exec chmod 750 {} +"
+- Set permissions on files with "find /mnt/downloads -type f -exec chmod 640 {} +"
+Set selinux:
+- semanage fcontext -a -t samba_share_t "/mnt/downloads(/.*)?"
+- restorecon -Rv /mnt/downloads
+
+
 Configure samba:
-- add to /etc/samba/smb.conf
+- All config values: https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html
+- Add to /etc/samba/smb.conf
 [downloads]
    path = /mnt/downloads
    browseable = yes
    writable = yes
    valid users = <user>
    force user = <user>
-   force group = <user>
-   create mask = 0644
-   directory mask = 0755
+   force group = users
+   create mask = 0640
+   directory mask = 0750
    # Use modern SMB protocol
    smb encrypt = desired
 Configure firewall:
@@ -49,6 +57,7 @@ Enable samba:
 - systemctl enable --now smb
 Test the samba config:
 - testparm
+
 
 Enable 2fa for cockpit:
 Use google-authenticator PAM library:
