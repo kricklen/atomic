@@ -23,12 +23,10 @@
 #    - cockpit_ws
 #    - fail2ban
     - ddclient
-# Instead of using a container for samba, use the fedora package:
-# https://docs.fedoraproject.org/en-US/quick-docs/samba/
-#    - samba
     - nextcloud
     - web
     - proxy
     - plex
     - tor_relay
+    - btrbk
     - watchtower
