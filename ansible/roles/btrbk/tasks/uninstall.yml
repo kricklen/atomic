@@ -1,0 +1,15 @@
+# - name: Remove File - btrbk.timer
+#   ansible.builtin.file:
+#     path: /etc/systemd/system/btrbk.timer
+#     state: absent
+
+# - name: Remove File - btrbk.service
+#   ansible.builtin.file:
+#     path: /etc/systemd/system/btrbk.service
+#     state: absent
+
+- name: Disable Systemd Unit - btrbk.timer
+  ansible.builtin.systemd_service:
+    name: btrbk.timer
+    daemon_reload: true
+    state: stopped

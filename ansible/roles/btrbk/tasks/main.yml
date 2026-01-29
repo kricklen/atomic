@@ -1,8 +1,8 @@
-# Include tasks for creating ouroboros
-- name: Install ouroboros
+# Include tasks for creating btrbk backups
+- name: Install btrbk
   ansible.builtin.include_tasks: "install.yml"
   when: run_mode == "install"
 
-- name: Uninstall ouroboros
+- name: Uninstall btrbk
   ansible.builtin.include_tasks: "uninstall.yml"
   when: run_mode == "uninstall"

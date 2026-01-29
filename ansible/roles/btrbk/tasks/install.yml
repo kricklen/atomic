@@ -1,0 +1,44 @@
+# Create systemd timer and service for btrbk execution
+- name: Create Systemd Unit - btrbk.service
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/btrbk.service
+    content: |
+      [Unit]
+      Description=btrbk backup
+      Documentation=man:btrbk(1)
+
+      [Service]
+      Type=oneshot
+      ExecStart=/sbin/btrbk run
+    mode: "0644"
+    owner: root
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+- name: Create Systemd Unit - btrbk.timer
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/btrbk.timer
+    content: |
+      [Unit]
+      Description=btrbk daily backup
+
+      [Timer]
+      OnCalendar=daily
+      AccuracySec=10min
+      Persistent=true
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: "0644"
+    owner: root
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+
+- name: Enable Systemd Unit - btrbk.timer
+  ansible.builtin.systemd_service:
+    name: btrbk.timer
+    daemon_reload: true
+    enabled: true
+    state: started
