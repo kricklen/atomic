@@ -9,9 +9,9 @@
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     env:
-      WUD_TRIGGER_DOCKER_UPDATE_PRUNE: true
-      WUD_TRIGGER_DOCKER_UPDATE_AUTO: true
-      WUD_TRIGGER_DOCKER_UPDATE_MODE: simple
+      WUD_TRIGGER_DOCKER_UPDATE_PRUNE: "true"
+      WUD_TRIGGER_DOCKER_UPDATE_AUTO: "true"
+      WUD_TRIGGER_DOCKER_UPDATE_MODE: "simple"
     ports:
       - 3000:3000
     networks:
