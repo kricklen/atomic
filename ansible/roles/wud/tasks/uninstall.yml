@@ -1,0 +1,4 @@
+- name: Stop and Remove Docker Container - wud
+  community.docker.docker_container:
+    state: absent
+    name: wud

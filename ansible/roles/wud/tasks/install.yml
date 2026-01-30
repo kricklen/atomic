@@ -1,0 +1,20 @@
+# Start the wud docker container
+- name: Start Docker Container - wud
+  community.docker.docker_container:
+    state: started
+    name: wud
+    hostname: wud
+    image: getwud/wud
+    restart_policy: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env:
+      WUD_TRIGGER_DOCKER_UPDATE_PRUNE: true
+      WUD_TRIGGER_DOCKER_UPDATE_AUTO: true
+      WUD_TRIGGER_DOCKER_UPDATE_MODE: simple
+    ports:
+      - 3000:3000
+    networks:
+      - name: wud-public
+    comparisons:
+      networks: strict

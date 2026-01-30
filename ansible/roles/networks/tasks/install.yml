@@ -37,9 +37,9 @@
     name: tor-public
     enable_ipv6: false
 
-- name: Create Docker Network - watchtower-public
+- name: Create Docker Network - wud-public
   community.docker.docker_network:
-    name: watchtower-public
+    name: wud-public
     enable_ipv6: false
 
 - name: Create Docker Network - web-private

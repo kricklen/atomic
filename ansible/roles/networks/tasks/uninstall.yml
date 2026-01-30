@@ -33,10 +33,10 @@
     state: absent
     name: tor-public
 
-- name: Create Docker Network - watchtower-public
+- name: Create Docker Network - wud-public
   community.docker.docker_network:
     state: absent
-    name: watchtower-public
+    name: wud-public
 
 - name: Create Docker Network - web-private
   community.docker.docker_network:

@@ -1,8 +1,9 @@
-# Include tasks for creating watchtower
-- name: Install watchtower
+# Include tasks for creating WUD
+# https://getwud.github.io/wud/#/
+- name: Install wud
   ansible.builtin.include_tasks: "install.yml"
   when: run_mode == "install"
 
-- name: Uninstall watchtower
+- name: Uninstall wud
   ansible.builtin.include_tasks: "uninstall.yml"
   when: run_mode == "uninstall"
