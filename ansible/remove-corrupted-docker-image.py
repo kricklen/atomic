@@ -66,6 +66,8 @@ def remove_distribution_metadata(image_id):
 def main():
     if len(sys.argv) != 2:
         print("Usage: remove-corrupted-docker-image.py <image-id>")
+        print(" Retrieve full image id with this command:")
+        print(" docker inspect --format='{{.Id}}' <image-id>")
         sys.exit(1)
 
     image_id = sys.argv[1].strip()
