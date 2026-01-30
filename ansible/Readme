@@ -15,6 +15,7 @@ ToDo:
 # - check gzip comression of nginx in proxy and nextcloud, only compress once
 # - enable cockpit 2fa login
 # - enable samba windows login
+# - enable btrbk and schedule backups to separate ssd
 
 Add samba to fedora (run all cmds with root):
 Install samba:

@@ -118,16 +118,20 @@
     serole: "{{ se_file_role }}"
     setype: "{{ se_file_type }}"
 
-# Create folder for redis.sock
-- name: Create /var/run/redis
-  ansible.builtin.file:
-    path: /var/run/redis
-    recurse: true
-    owner: "{{ nextcloud_user_name }}"
-    group: "{{ nextcloud_group_name }}"
-    seuser: "{{ se_file_user }}"
-    serole: "{{ se_file_role }}"
-    setype: "{{ se_file_type }}"
+# Create a configuration to automatically create /run/redis for nextcloud_volume_list:
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Tmpfiles.d/
+- name: Create /etc/tmpfiles.d/redis.conf
+  ansible.builtin.copy:
+    dest: /etc/tmpfiles.d/redis.conf
+    content: |
+      d /run/redis 0755 nextcloud users -
+    mode: "0644"
+    owner: root
+    group: root
+    seuser: system_u
+    serole: object_r
+    setype: etc_t
+  notify: Nextcloud - Apply tmpfiles
 
 # Start nextcloud-redis docker container
 - name: Start Container - nextcloud-redis
