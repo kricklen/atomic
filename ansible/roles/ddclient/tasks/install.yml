@@ -45,6 +45,8 @@
     image: linuxserver/ddclient:latest
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ ddclient_config_dir }}:/config:Z"
     env:

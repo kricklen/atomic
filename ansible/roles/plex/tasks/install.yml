@@ -19,6 +19,8 @@
     image: plexinc/pms-docker:latest
     pull: true
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "/mnt/plex/config:/config:Z"
       - "/mnt/plex/transcode:/transcode:Z"

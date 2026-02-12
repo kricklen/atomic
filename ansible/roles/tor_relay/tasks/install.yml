@@ -49,6 +49,8 @@
     pull: true
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     user: "{{ tor_relay_user_id }}:{{ tor_relay_group_name }}"
     volumes:
       - "{{ tor_relay_config_dir }}:/config:Z"

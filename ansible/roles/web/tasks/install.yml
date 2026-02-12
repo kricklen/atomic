@@ -52,6 +52,8 @@
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ web_www_dir }}:/var/www/html:z"
     networks:
@@ -69,6 +71,8 @@
     user: "{{ web_user_id }}:{{ web_group_id }}"
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ web_www_dir }}:/var/www/html:z,ro"
       - "{{ web_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:z,ro"

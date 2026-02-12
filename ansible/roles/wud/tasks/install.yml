@@ -4,14 +4,19 @@
     state: started
     name: wud
     hostname: wud
-    image: getwud/wud
+    image: getwud/wud:latest
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     env:
       WUD_TRIGGER_DOCKER_UPDATE_PRUNE: "true"
       WUD_TRIGGER_DOCKER_UPDATE_AUTO: "true"
       WUD_TRIGGER_DOCKER_UPDATE_MODE: "simple"
+      WUD_WATCHER_LOCAL_CRON: "0 */6 * * *" # Every 6 hours
+      WUD_WATCHER_LOCAL_WATCHBYDEFAULT: "true"
+      WUD_WATCHER_LOCAL_SOCKET: "/var/run/docker.sock"
     ports:
       - 3000:3000
     networks:

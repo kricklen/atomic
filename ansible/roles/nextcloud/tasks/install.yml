@@ -53,7 +53,7 @@
     state: started
     restart_policy: unless-stopped
     labels:
-      com.centurylinklabs.watchtower.enable: "false"
+      wud.watch.digest: "true"
     env:
       "MYSQL_RANDOM_ROOT_PASSWORD": "yes"
       "MARIADB_AUTO_UPGRADE": "yes"
@@ -143,6 +143,8 @@
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     command:
       - redis-server
       - /usr/local/etc/redis/redis.conf
@@ -164,6 +166,8 @@
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html:z"
       - "/var/run/redis:/run/redis:z"
@@ -185,6 +189,8 @@
     user: "{{ nextcloud_user_id }}:{{ nextcloud_group_id }}"
     state: started
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html:z,ro"
       - "{{ nextcloud_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf:z,ro"

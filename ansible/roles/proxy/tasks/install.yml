@@ -84,6 +84,8 @@
     image: kricklen/proxy_nginx:latest
     pull: true
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ proxy_nginx_path }}:/etc/nginx/conf.d:Z"
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
@@ -158,6 +160,8 @@
     image: kricklen/proxy_certbot:latest
     pull: true
     restart_policy: unless-stopped
+    labels:
+      wud.watch.digest: "true"
     volumes:
       - "{{ proxy_certbot_conf_path }}:/etc/letsencrypt:z"
       - "{{ proxy_certbot_www_path }}:/var/www/certbot:z"
