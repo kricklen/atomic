@@ -19,9 +19,9 @@ cd ../proxy_nginx
 ./pull-and-build.sh
 ./push.sh
 
-cd ../samba
-./pull-and-build.sh
-./push.sh
+# cd ../samba
+# ./pull-and-build.sh
+# ./push.sh
 
 cd ../tor_relay
 ./pull-and-build.sh

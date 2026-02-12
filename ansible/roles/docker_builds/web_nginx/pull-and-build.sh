@@ -1,3 +1,3 @@
 #!/bin/bash
 docker pull nginx:alpine
-docker build -t kricklen/web_nginx .
+docker build -t kricklen/web_nginx:latest .
