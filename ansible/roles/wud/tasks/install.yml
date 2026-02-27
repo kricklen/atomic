@@ -17,6 +17,7 @@
       WUD_WATCHER_LOCAL_CRON: "0 */6 * * *" # Every 6 hours
       WUD_WATCHER_LOCAL_WATCHBYDEFAULT: "true"
       WUD_WATCHER_LOCAL_SOCKET: "/var/run/docker.sock"
+      WUD_LOG_LEVEL: "debug"
     ports:
       - 3000:3000
     networks:
