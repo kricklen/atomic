@@ -18,6 +18,8 @@
       WUD_WATCHER_LOCAL_WATCHBYDEFAULT: "true"
       WUD_WATCHER_LOCAL_SOCKET: "/var/run/docker.sock"
       WUD_LOG_LEVEL: "debug"
+      WUD_AUTH_ADMIN_USER: "admin"
+      WUD_AUTH_ADMIN_PASSWORD: "admin"
     ports:
       - 3000:3000
     networks:
