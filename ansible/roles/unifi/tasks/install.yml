@@ -13,7 +13,7 @@
 # Create directories
 - name: Create Directories - unifi
   file:
-    path: /mnt/unifi/data
+    path: "{{ unifi_data_dir }}"
     state: directory
     owner: "{{ unifi_user_name }}"
     group: "{{ unifi_group_name }}"
@@ -36,7 +36,7 @@
       TZ: "Europe/Berlin"
       SYSTEM_IP: "{{ server_ip }}"
     volumes:
-      - "/mnt/unifi/main:/unifi:Z"
+      - "{{ unifi_data_dir }}:/unifi:Z"
     ports:
       - 18080:8080
       - 18443:8443

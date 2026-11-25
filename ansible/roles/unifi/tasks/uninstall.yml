@@ -11,4 +11,4 @@
 # - name: Delete directories - unifi
 #  file:
 #    state: absent
-#    path: /mnt/unifi/data
+#    path: "{{ unifi_data_dir }}"
