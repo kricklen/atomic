@@ -1,0 +1,48 @@
+# Create User for unifi
+- name: Create User - unifi
+  ansible.builtin.user:
+    state: present
+    name: "{{ unifi_user_name }}"
+    comment: User for unifi docker
+    system: false
+    create_home: false
+    # non_unique: "yes"
+    uid: "{{ unifi_user_id }}"
+    group: "{{ unifi_group_name }}"
+
+# Create directories
+- name: Create Directories - unifi
+  file:
+    path: /mnt/unifi/data
+    state: directory
+    owner: "{{ unifi_user_name }}"
+    group: "{{ unifi_group_name }}"
+    seuser: "{{ se_file_user }}"
+    serole: "{{ se_file_role }}"
+    setype: "{{ se_file_type }}"
+    recurse: yes
+
+# Start the unifi docker container
+- name: Start Docker Container - unifi
+  community.docker.docker_container:
+    state: started
+    name: unifi
+    hostname: unifi
+    image: jacobalberty/unifi:latest
+    restart_policy: unless-stopped
+    #command:
+    #  "{{ samba_command_list }}"
+    env:
+      TZ: "Europe/Berlin"
+      SYSTEM_IP: "{{ server_ip }}"
+    volumes:
+      - "/mnt/unifi/main:/unifi:Z"
+    ports:
+      - 18080:8080
+      - 18443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+    networks:
+      - name: unifi-public
+    comparisons:
+      networks: strict # This removes the container from the default network, which should be "bridge"

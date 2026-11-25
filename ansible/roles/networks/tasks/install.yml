@@ -46,3 +46,8 @@
   community.docker.docker_network:
     name: web-private
     enable_ipv6: false
+
+- name: Create Docker Network - unifi-public
+  community.docker.docker_network:
+    name: unifi-public
+    enable_ipv6: false

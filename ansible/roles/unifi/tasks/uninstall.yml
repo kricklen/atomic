@@ -1,0 +1,14 @@
+- name: Stop and Remove Docker Container - unifi
+  community.docker.docker_container:
+    state: absent
+    name: unifi
+
+- name: Delete User - unifi
+  ansible.builtin.user:
+    state: absent
+    name: "{{ unifi_user_name }}"
+
+# - name: Delete directories - unifi
+#  file:
+#    state: absent
+#    path: /mnt/unifi/data

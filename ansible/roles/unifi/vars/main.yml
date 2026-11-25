@@ -1,0 +1,5 @@
+---
+unifi_user_name: "unifi"
+unifi_user_id: 1060
+unifi_group_name: "users"
+unifi_group_id: 100

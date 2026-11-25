@@ -1,0 +1,8 @@
+# Include tasks for creating unifi
+- name: Install unifi
+  ansible.builtin.include_tasks: "install.yml"
+  when: run_mode == "install"
+
+- name: Uninstall unifi
+  ansible.builtin.include_tasks: "uninstall.yml"
+  when: run_mode == "uninstall"

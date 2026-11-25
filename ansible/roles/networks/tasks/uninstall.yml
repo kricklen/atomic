@@ -1,44 +1,49 @@
-- name: Create Docker Network - ddclient
+- name: Remove Docker Network - ddclient
   community.docker.docker_network:
     state: absent
     name: ddclient-public
 
-- name: Create Docker Network - nextcloud-public
+- name: Remove Docker Network - nextcloud-public
   community.docker.docker_network:
     state: absent
     name: nextcloud-public
 
-- name: Create Docker Network - nextcloud-private
+- name: Remove Docker Network - nextcloud-private
   community.docker.docker_network:
     state: absent
     name: nextcloud-private
 
-- name: Create Docker Network - plex-public
+- name: Remove Docker Network - plex-public
   community.docker.docker_network:
     state: absent
     name: plex-public
 
-- name: Create Docker Network - reverse-proxy-public
+- name: Remove Docker Network - reverse-proxy-public
   community.docker.docker_network:
     state: absent
     name: reverse-proxy-public
 
-- name: Create Docker Network - certbot-public
+- name: Remove Docker Network - certbot-public
   community.docker.docker_network:
     state: absent
     name: certbot-public
 
-- name: Create Docker Network - tor-public
+- name: Remove Docker Network - tor-public
   community.docker.docker_network:
     state: absent
     name: tor-public
 
-- name: Create Docker Network - wud-public
+- name: Remove Docker Network - wud-public
   community.docker.docker_network:
     state: absent
     name: wud-public
 
-- name: Create Docker Network - web-private
+- name: Remove Docker Network - web-private
   community.docker.docker_network:
     state: absent
     name: web-private
+
+- name: Remove Docker Network - unifi-public
+  community.docker.docker_network:
+    state: absent
+    name: unifi-public
